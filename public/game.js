@@ -11,9 +11,9 @@ let Application = PIXI.Application,
     WIDTH = 320;
     TILE = 16;
     SPEED = 2.5;
-    GRAVITY = .85;
+    GRAVITY = .35;
     MAXDY = 20;
-    JUMP = 12;
+    JUMP = 5;
     RESOLUTION = 3;
 
 //Capture the keyboard arrow keys
@@ -191,21 +191,18 @@ function play(delta) {
   knight.ddy = GRAVITY;
   // console.log(knight.dy);
 
-
-  // if(collisionCheck(knight, level)) {
-  //   console.log(tx +', '+ty);
-  //     if (knight.dy != 0){             // if knight is "falling"
-  //       knight.dy = 0;                 // stop vertical motion
-  //       knight.y = (ty-1)*TILE-knight.halfHeight;        // clamp to position
-  //       knight.jumping = false;
-  //     }
-  // }
-
   switch(collision(knight, level)){
     case 0:
-      if (knight.dy != 0){             // if knight is "falling"
-        knight.dy = 0;                 // stop vertical motion
-        knight.y = (ty-1)*TILE-knight.halfHeight;        // clamp to position
+      if (knight.dy != 0){                              // if knight is "falling"
+        knight.dy = 0;                                  // stop vertical motion
+        knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
+        knight.jumping = false;
+      }
+      break;
+    case 1:
+      if (knight.dy != 0){                              // if knight is "falling"
+        knight.dy = 0;                                  // stop vertical motion
+        knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
         knight.jumping = false;
       }
       break;
