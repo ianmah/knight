@@ -139,7 +139,6 @@ function play(delta) {
 
   //Left arrow key `press` method
   left.press = () => {
-    //Change the knight's velocity when the key is pressed
     knight.dx = -SPEED;
   };
   //Left arrow key `release` method
@@ -205,6 +204,12 @@ function play(delta) {
         knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
         knight.jumping = false;
       }
+      break;
+    case 2:
+        knight.dx = 0;                                  // stop vertical motion
+      break;
+    case 3:
+        knight.dx = 0;                                  // stop vertical motion
       break;
   }
 

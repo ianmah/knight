@@ -4,10 +4,18 @@ function collision(knight, level){
   tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
   tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
 
+
+  thf = Math.floor((knight.x)/TILE);
+  thc = Math.ceil((knight.x)/TILE);
+
   if        (level[tyc][txf] === 'B'){
-    return 0;       // bottom collision
+    return 0;       // feet collision
   } else if (level[tyf][txf] === 'B'){
-    return 1;
+    return 1;       // head collision
+  } else if (level[tyc][thf+1] === 'B'){
+    return 2;
+  } else if (level[tyc][thc-1] === 'B'){
+    return 3;
   }
 
 }
