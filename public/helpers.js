@@ -1,104 +1,12 @@
-function hitTestRectangle(r1, r2) {
+function collision(knight, level){
 
-  //Define the variables we'll need to calculate
-  let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+  tx = Math.ceil(knight.x/TILE);
+  ty = Math.ceil((knight.y+knight.halfHeight)/TILE);
 
-  //hit will determine whether there's a collision
-  hit = false;
-
-  //Find the center points of each sprite
-  r1.centerX = r1.x + r1.width / 2;
-  r1.centerY = r1.y + r1.height / 2;
-  r2.centerX = r2.x + r2.width / 2;
-  r2.centerY = r2.y + r2.height / 2;
-
-  //Find the half-widths and half-heights of each sprite
-  r1.halfWidth = r1.width / 2;
-  r1.halfHeight = r1.height / 2;
-  r2.halfWidth = r2.width / 2;
-  r2.halfHeight = r2.height / 2;
-
-  //Calculate the distance vector between the sprites
-  vx = r1.centerX - r2.centerX;
-  vy = r1.centerY - r2.centerY;
-
-  //Figure out the combined half-widths and half-heights
-  combinedHalfWidths = r1.halfWidth + r2.halfWidth;
-  combinedHalfHeights = r1.halfHeight + r2.halfHeight;
-
-  //Check for a collision on the x axis
-  if (Math.abs(vx) < combinedHalfWidths) {
-
-    //A collision might be occurring. Check for a collision on the y axis
-    if (Math.abs(vy) < combinedHalfHeights) {
-
-      //There's definitely a collision happening
-      hit = true;
-    } else {
-
-      //There's no collision on the y axis
-      hit = false;
-    }
-  } else {
-
-    //There's no collision on the x axis
-    hit = false;
-  }
-
-  //`hit` will be either `true` or `false`
-  return hit;
-};
-
-function collisionCCheck(kx, ky, level){
-
-  txc = Math.floor(kx/TILE);
-  tyc = Math.ceil(ky/TILE);
-
-  if (level[tyc][txc] === 'B'){
-    return true;
+  if (level[ty][tx] === 'B'){
+    return 0;
   } else{
-    return false;
-  }
-
-}
-
-function collisionFCheck(kx, ky, level){
-
-  txf = Math.floor(kx/TILE);
-  tyf = Math.floor(ky/TILE);
-
-  if (level[tyf][txf] === 'B'){
-    return true;
-  } else{
-    return false;
-  }
-
-}
-
-function collisionLeftCheck(kx, ky, level){
-
-  txc = Math.ceil(kx/TILE);
-  tyc = Math.ceil(ky/TILE);
-
-  if (level[tyc][txc] === 'B'){
-    return true;
-  } else{
-    return false;
-  }
-
-}
-
-
-
-function collisionRightCheck(kx, ky, level){
-
-  txf = Math.floor(kx/TILE);
-  tyc = Math.ceil(ky/TILE);
-
-  if (level[tyc][txf] === 'B'){
-    return true;
-  } else{
-    return false;
+    return 1;
   }
 
 }

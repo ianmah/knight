@@ -8,7 +8,7 @@ let Application = PIXI.Application,
     Container = PIXI.Container;
     TextureCache = PIXI.utils.TextureCache;
     HEIGHT = 176;
-    WIDTH = 360;
+    WIDTH = 320;
     TILE = 16;
     SPEED = 2.5;
     GRAVITY = .85;
@@ -87,7 +87,6 @@ function setup() {
     y = i*TILE;
     for (j = 0; j < level[i].length; j++){
       x = j*TILE;
-      console.log(level[i][j]);
       let tile = level[i][j];
       if (tile === 'B'){
           let brick = new Sprite(texture);
@@ -98,7 +97,7 @@ function setup() {
     }
   }
 
-  floor.position.set(0, 12)
+  floor.position.set(0, 0)
   app.stage.addChild(floor);
 
   //Create the knight sprite
@@ -107,6 +106,8 @@ function setup() {
   knight.dy = 0;
   knight.x = WIDTH/2;
   knight.y = HEIGHT/2;
+  knight.halfHeight = knight.height/2;
+  knight.halfWidth = knight.width/2;
   knight.ddy = GRAVITY;
   app.stage.addChild(knight);
 
@@ -139,10 +140,7 @@ function play(delta) {
   //Left arrow key `press` method
   left.press = () => {
     //Change the knight's velocity when the key is pressed
-    //knight.dx = -SPEED;
-    if (!collisionCCheck(knight.x-2, knight.y, level)){
-      knight.dx = -SPEED;
-    }
+    knight.dx = -SPEED;
   };
   //Left arrow key `release` method
   left.release = () => {
@@ -156,7 +154,7 @@ function play(delta) {
 
   //Up
   up.press = () => {
-    console.log(knight.dy)
+    // console.log(knight.dy)
     if (!knight.jumping) {
       knight.jumping = true;
       knight.dy = - JUMP;
@@ -166,9 +164,7 @@ function play(delta) {
 
   //Right
   right.press = () => {
-  if (!collisionCCheck(knight.x+14, knight.y, level)){
     knight.dx = SPEED;
-  }
   };
   right.release = () => {
     if (left.isDown){
@@ -195,42 +191,24 @@ function play(delta) {
   knight.ddy = GRAVITY;
   // console.log(knight.dy);
 
-  if(collisionCCheck(knight.x, knight.y, level)) {
+
+  // if(collisionCheck(knight, level)) {
+  //   console.log(tx +', '+ty);
+  //     if (knight.dy != 0){             // if knight is "falling"
+  //       knight.dy = 0;                 // stop vertical motion
+  //       knight.y = (ty-1)*TILE-knight.halfHeight;        // clamp to position
+  //       knight.jumping = false;
+  //     }
+  // }
+
+  switch(collision(knight, level)){
+    case 0:
       if (knight.dy != 0){             // if knight is "falling"
         knight.dy = 0;                 // stop vertical motion
-        knight.y = (tyc-1)*TILE;        // clamp to position
+        knight.y = (ty-1)*TILE-knight.halfHeight;        // clamp to position
         knight.jumping = false;
       }
+      break;
   }
 
-  if(collisionFCheck(knight.x, knight.y, level)) {
-      if (knight.dy != 0){             // if knight is "falling"
-        knight.dy = 0;                 // stop vertical motion
-        knight.y = (tyc+1)*TILE;        // clamp to position
-      }
-  }
-
-  if(collisionLeftCheck(knight.x-17, knight.y, level)) {
-      if (knight.dx != 0){             // if knight is "falling"
-        knight.dx = 0;                 // stop vertical motion
-      }
-  }
-
-  if(collisionRightCheck(knight.x+14, knight.y, level)) {
-      if (knight.dx != 0){             // if knight is "falling"
-        knight.dx = 0;                 // stop vertical motion
-      }
-  }
-
-  //
-  // if (hitTestRectangle(knight, floor)) {
-  //   if (knight.dy != 0){             // if knight is "falling"
-  //     knight.dy = 0;                 // stop vertical motion
-  //     knight.y = (ty-1)*TILE;            // clamp to position
-  //   }
-  //   knight.jumping = false;
-  //   // console.log('collision detected');
-  // } else {
-  //   //There's no collision
-  // }
 }
