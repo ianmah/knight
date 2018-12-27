@@ -4,7 +4,6 @@ function collision(knight, level){
   tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
   tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
 
-
   thf = Math.floor((knight.x)/TILE);
   thc = Math.ceil((knight.x)/TILE);
 
@@ -12,10 +11,25 @@ function collision(knight, level){
     return 0;       // feet collision
   } else if (level[tyf][txf] === 'B'){
     return 1;       // head collision
-  } else if (level[tyc][thf+1] === 'B'){
-    return 2;
-  } else if (level[tyc][thc-1] === 'B'){
-    return 3;
+  } else if (level[tyf][thf+1] === 'B'){
+    return 2;       // right collision
+  } else if (level[tyf][thc-1] === 'B'){
+    return 3;       //left collision
+  }
+
+}
+
+function leftRight(knight, level){
+  
+  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
+
+  thf = Math.floor((knight.x)/TILE);
+  thc = Math.ceil((knight.x)/TILE);
+
+  if (level[tyf][thf+1] === 'B' || level[tyf][thc-1] === 'B'){
+    return true;       // collision
+  } else {
+    return false;      // no collision
   }
 
 }

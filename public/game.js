@@ -139,7 +139,9 @@ function play(delta) {
 
   //Left arrow key `press` method
   left.press = () => {
-    knight.dx = -SPEED;
+    if (!leftRight(knight, level)){
+      knight.dx = -SPEED;
+    }
   };
   //Left arrow key `release` method
   left.release = () => {
@@ -163,7 +165,9 @@ function play(delta) {
 
   //Right
   right.press = () => {
-    knight.dx = SPEED;
+    if (!leftRight(knight, level)){
+      knight.dx = SPEED;
+    }
   };
   right.release = () => {
     if (left.isDown){
