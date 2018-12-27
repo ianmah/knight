@@ -10,10 +10,10 @@ let Application = PIXI.Application,
     HEIGHT = 176;
     WIDTH = 320;
     TILE = 16;
-    SPEED = 2.5;
-    GRAVITY = .35;
-    MAXDY = 20;
-    JUMP = 5;
+    SPEED = 1.5;
+    GRAVITY = .55;
+    MAXDY = 10;
+    JUMP = 9;
     RESOLUTION = 3;
 
 //Capture the keyboard arrow keys
@@ -32,8 +32,8 @@ let level = [
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
-  ['O', 'O', 'O', 'B', 'B', 'B', 'O', 'O', 'B', 'B', 'O', 'O', 'O', 'O', 'O', 'B', 'B', 'B', 'O', 'O',],
-  ['O', 'O', 'O', 'B', 'B', 'B', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
+  ['O', 'O', 'O', 'B', 'B', 'O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'B', 'B', 'O', 'O',],
+  ['O', 'O', 'O', 'B', 'B', 'O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['B', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],]

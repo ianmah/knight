@@ -1,12 +1,12 @@
 function collision(knight, level){
 
-  tx = Math.ceil(knight.x/TILE);
+  txf = Math.floor((knight.x+knight.halfWidth)/TILE);
   tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
   tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
 
-  if        (level[tyc][tx] === 'B'){
+  if        (level[tyc][txf] === 'B'){
     return 0;       // bottom collision
-  } else if (level[tyf][tx] === 'B'){
+  } else if (level[tyf][txf] === 'B'){
     return 1;
   }
 
