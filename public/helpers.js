@@ -49,6 +49,7 @@ function leftCollision(knight, level){
 
 }
 
+
 function keyboard(value) {
   let key = {};
   key.value = value;

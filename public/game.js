@@ -119,8 +119,14 @@ function setup() {
 
   //Render the stage
   app.renderer.render(app.stage);
+
+
+
+
   //Start the game loop
   gameLoop();
+
+
 }
 
 state = play;
@@ -132,47 +138,57 @@ function gameLoop(delta){
   state(delta);
 }
 
+let initX, initY, playerX, playerY;
+
+function touchHandlerStart(e) {
+    if(e.touches) {
+        initX = e.touches[0].pageX;
+        initY = e.touches[0].pageY;
+        console.log(initX + ', ' + initY)
+        //output.innerHTML = "Touch: "+ " x: " + initX + ", y: " + initY;
+        e.preventDefault();
+    }
+}
+function touchHandlerEnd(e) {
+    if(e.touches) {
+      playerX = null;
+      playerY = null;
+      console.log('end');
+      initX = null;
+      initY = null;
+    }
+}
+function touchHandler(e) {
+    if(e.touches) {
+      console.log()
+        if (initX - e.touches[0].pageX > 0){
+          playerX = true;
+        } else {
+          playerX = false;
+        }
+        if (initY - e.touches[0].pageY > 0){
+          playerY = true;
+        } else {
+          playerY = false;
+        }
+        output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
+        e.preventDefault();
+    }
+}
+
+document.addEventListener("touchstart", touchHandlerStart);
+document.addEventListener("touchend", touchHandlerEnd);
+document.addEventListener("touchmove", touchHandler);
+
 function play(delta) {
   //Tile position of knight
   // console.log(tx + ', ' + ty);
-
-
-  jumpBtn.addEventListener('mousedown', function(){
-    moveJump();
-  })
-
-  leftBtn.addEventListener('mousedown', function(){
-    moveLeft();
-  })
-  leftBtn.addEventListener('mouseup', function(){
-    stopLeft();
-  })
-
-  rightBtn.addEventListener('mousedown', function(){
-    moveRight();
-  })
-  rightBtn.addEventListener('mouseup', function(){
+  if (playerX != null){
+    playerX ? moveLeft() : moveRight();
+  } else {
     stopRight();
-  })
-
-  jumpBtn.addEventListener('touchstart', function(){
-    moveJump();
-  })
-
-  leftBtn.addEventListener('touchstart', function(){
-    moveLeft();
-  })
-  leftBtn.addEventListener('touchend', function(){
     stopLeft();
-  })
-
-  rightBtn.addEventListener('touchstart', function(){
-    moveRight();
-  })
-  rightBtn.addEventListener('touchend', function(){
-    stopRight();
-  })
-
+  }
   //Left arrow key `press` method
   left.press = () => {
     moveLeft();
