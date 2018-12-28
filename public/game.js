@@ -14,7 +14,7 @@ let Application = PIXI.Application,
     GRAVITY = .55;
     MAXDY = 10;
     JUMP = 9;
-    RESOLUTION = 3;
+    RESOLUTION = 2;
 
 //Capture the keyboard arrow keys
 let left = keyboard("ArrowLeft"),
@@ -97,7 +97,7 @@ function setup() {
     }
   }
 
-  floor.position.set(0, 0)
+  floor.position.set(0, -2)
   app.stage.addChild(floor);
 
   //Create the knight sprite
@@ -137,44 +137,63 @@ function play(delta) {
   // console.log(tx + ', ' + ty);
 
 
+  jumpBtn.addEventListener('mousedown', function(){
+    moveJump();
+  })
+
+  leftBtn.addEventListener('mousedown', function(){
+    moveLeft();
+  })
+  leftBtn.addEventListener('mouseup', function(){
+    stopLeft();
+  })
+
+  rightBtn.addEventListener('mousedown', function(){
+    moveRight();
+  })
+  rightBtn.addEventListener('mouseup', function(){
+    stopRight();
+  })
+
+  jumpBtn.addEventListener('touchstart', function(){
+    moveJump();
+  })
+
+  leftBtn.addEventListener('touchstart', function(){
+    moveLeft();
+  })
+  leftBtn.addEventListener('touchend', function(){
+    stopLeft();
+  })
+
+  rightBtn.addEventListener('touchstart', function(){
+    moveRight();
+  })
+  rightBtn.addEventListener('touchend', function(){
+    stopRight();
+  })
+
   //Left arrow key `press` method
   left.press = () => {
-    if (!leftRight(knight, level)){
-      knight.dx = -SPEED;
-    }
+    moveLeft();
   };
   //Left arrow key `release` method
   left.release = () => {
-    if (right.isDown){
-      knight.dx = SPEED;
-    } else {
-      knight.dx = 0;
-    }
-
+    stopLeft();
   };
 
   //Up
   up.press = () => {
-    // console.log(knight.dy)
-    if (!knight.jumping) {
-      knight.jumping = true;
-      knight.dy = - JUMP;
-    }
+    moveJump();
   };
 
 
   //Right
   right.press = () => {
-    if (!leftRight(knight, level)){
-      knight.dx = SPEED;
-    }
+    moveRight();
   };
   right.release = () => {
-    if (left.isDown){
-      knight.dx = -SPEED;
-    } else {
-      knight.dx = 0;
-    }
+    stopRight();
   };
 
   //l
@@ -217,4 +236,40 @@ function play(delta) {
       break;
   }
 
+}
+
+function moveLeft(){
+  if (!leftCollision(knight, level)){
+    knight.dx = -SPEED;
+  }
+}
+
+function stopLeft(){
+  if (right.isDown){
+    moveRight();
+  } else {
+    knight.dx = 0;
+  }
+}
+
+function moveRight(){
+  if (!rightCollision(knight, level)){
+    knight.dx = SPEED;
+  }
+}
+
+function stopRight(){
+  if (left.isDown){
+    moveLeft();
+  } else {
+    knight.dx = 0;
+  }
+}
+
+function moveJump(){
+  // console.log(knight.dy)
+  if (!knight.jumping) {
+    knight.jumping = true;
+    knight.dy = - JUMP;
+  }
 }

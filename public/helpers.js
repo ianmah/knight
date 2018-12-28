@@ -19,14 +19,29 @@ function collision(knight, level){
 
 }
 
-function leftRight(knight, level){
-  
+function rightCollision(knight, level){
+
   tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
 
   thf = Math.floor((knight.x)/TILE);
   thc = Math.ceil((knight.x)/TILE);
 
-  if (level[tyf][thf+1] === 'B' || level[tyf][thc-1] === 'B'){
+  if (level[tyf][thf+1] === 'B'){
+    return true;       // collision
+  } else {
+    return false;      // no collision
+  }
+
+}
+
+function leftCollision(knight, level){
+
+  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
+
+  thf = Math.floor((knight.x)/TILE);
+  thc = Math.ceil((knight.x)/TILE);
+
+  if (level[tyf][thc-1] === 'B'){
     return true;       // collision
   } else {
     return false;      // no collision

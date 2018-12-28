@@ -8,19 +8,26 @@ console.log(url)
 
 
 // Query DOM
-var send = document.getElementById('send');
+var jumpBtn = document.getElementById('up');
+var leftBtn = document.getElementById('left');
+var rightBtn = document.getElementById('right');
 
+
+function touchHandler(e) {
+    if(e.touches) {
+        playerX = e.touches[0].pageX;
+        playerY = e.touches[0].pageY;
+        output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
+        e.preventDefault();
+    }
+}
+
+document.addEventListener("touchstart", touchHandler);
+document.addEventListener("touchmove", touchHandler);
 
 $(function(){
   //$('#scoreboard').hide()
 });
-
-
-// Emit events
-send.addEventListener('click', function(){
-  console.log('hi')
-  socket.emit('click')
-})
 
 // Listen for addEventListener
 socket.on('update', function(){
