@@ -10,15 +10,21 @@ var server = app.listen(4000, function(){
 // Static fils
 app.use(express.static('public'));
 
+var users = [];
+
 // Socket Setup
 var io = socket(server);
 
 io.on('connection', function(socket){
   console.log('made socket connection ' + socket.id);
+  users.push(socket.id)
+  console.log(users);
+  io.to(socket.id).emit('id', socket.id);
 
-  socket.on('click', function(){
-    console.log('clicked');
-    io.emit('update')
+  socket.on('playerUpdate', function(data){
+    if (data.id == users[0]){
+      socket.broadcast.emit('update', data)
+    }
   })
 
 });

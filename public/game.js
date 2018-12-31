@@ -119,13 +119,8 @@ function setup() {
 
   //Render the stage
   app.renderer.render(app.stage);
-
-
-
-
   //Start the game loop
   gameLoop();
-
 
 }
 
@@ -137,8 +132,6 @@ function gameLoop(delta){
   // update current game state
   state(delta);
 }
-
-let initX, initY, playerX, playerY;
 
 function touchHandlerStart(e) {
     if(e.touches) {
@@ -242,6 +235,13 @@ function play(delta) {
       break;
   }
 
+
+  socket.emit('playerUpdate', {
+    id: id,
+    x: knight.x,
+    y: knight.y
+  })
+
 }
 
 function moveLeft(){
@@ -274,4 +274,27 @@ function moveJump(){
     knight.jumping = true;
     knight.dy = - JUMP;
   }
+
 }
+
+// setInterval(function(){
+
+  // socket.emit('update', {
+  //   x: knight.x,
+  //   y: knight.y
+  // })
+  // console.log('hi');
+// }, 1000);
+
+socket.on('update', function(data){
+  output.innerHTML = '<p>' + data.x + '</p>';
+  knight.x = data.x;
+  knight.y = data.y;
+})
+
+let id;
+
+socket.on('id', function(data){
+  console.log(data);
+  id = data;
+})
