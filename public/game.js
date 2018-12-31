@@ -269,22 +269,12 @@ function stopRight(){
 }
 
 function moveJump(){
-  // console.log(knight.dy)
   if (!knight.jumping) {
     knight.jumping = true;
     knight.dy = - JUMP;
   }
 
 }
-
-// setInterval(function(){
-
-  // socket.emit('update', {
-  //   x: knight.x,
-  //   y: knight.y
-  // })
-  // console.log('hi');
-// }, 1000);
 
 socket.on('update', function(data){
   output.innerHTML = '<p>' + data.x + '</p>';
