@@ -26,7 +26,7 @@ let left = keyboard("ArrowLeft"),
 let level = [
 
   //1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20
-  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
@@ -216,7 +216,7 @@ function play(delta) {
     console.log(knight.x + ', '+ knight.y);
   };
 
-  if (!collisionCoords(knight, level)){
+  if (!collisionX(knight, level)){
     knight.x = knight.x + knight.dx;
   } else {
     knight.jumping = false;
@@ -226,35 +226,25 @@ function play(delta) {
   knight.ddy = GRAVITY;
   // console.log(knight.dy);
 
-  switch(collision(knight, level)){
-    case 0:
+  switch(collisionY(knight, level)){
+    case 0: // feet collision
       if (knight.dy != 0){                              // if knight is "falling"
         knight.dy = 0;                                  // stop vertical motion
         knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
         knight.jumping = false;
       }
       break;
-    case 1:
+    case 1: // head collision
       if (knight.dy != 0){                              // if knight is "falling"
         knight.dy = 0;                                  // stop vertical motion
         knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
-        knight.jumping = false;
       }
       break;
-    // case 2:
-    //     knight.dx = 0;                                  // stop vertical motion
-    //   break;
-    // case 3:
-    //     knight.dx = 0;                                  // stop vertical motion
-    //   break;
   }
 
 }
 
-
 function moveLeft(){
-  if (!leftCollision(knight, level)){
-  }
     knight.dx = -SPEED;
 }
 
@@ -267,8 +257,6 @@ function stopLeft(){
 }
 
 function moveRight(){
-  if (!rightCollision(knight, level)){
-  }
     knight.dx = SPEED;
 }
 

@@ -1,4 +1,4 @@
-function collision(knight, level){
+function collisionY(knight, level){
 
   txf = Math.floor((knight.x+knight.halfWidth)/TILE);
   tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
@@ -12,15 +12,9 @@ function collision(knight, level){
   } else if (level[tyf][txf] === 'B'){
     return 1;       // head collision
   }
-  // else if (level[tyf][thf+1] === 'B'){
-  //   return 2;       // right collision
-  // } else if (level[tyf][thc-1] === 'B'){
-  //   return 3;       //left collision
-  // }
-
 }
 
-function collisionCoords(knight, level){
+function collisionX(knight, level){
   predictX = knight.x + knight.dx;
 
   txf = Math.floor((predictX+knight.halfWidth)/TILE);
@@ -41,38 +35,6 @@ function collisionCoords(knight, level){
   }
 
 }
-
-function rightCollision(knight, level){
-
-  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
-
-  thf = Math.floor((knight.x)/TILE);
-  thc = Math.ceil((knight.x)/TILE);
-
-  if (level[tyf][thf+1] === 'B'){
-    return true;       // collision
-  } else {
-    return false;      // no collision
-  }
-
-}
-
-function leftCollision(knight, level){
-
-  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
-
-  thf = Math.floor((knight.x)/TILE);
-  thc = Math.ceil((knight.x)/TILE);
-
-  if (level[tyf][thc-1] === 'B'){
-    return true;       // collision
-    console.log('collision');
-  } else {
-    return false;      // no collision
-  }
-
-}
-
 
 function keyboard(value) {
   let key = {};
