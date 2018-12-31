@@ -11,10 +11,33 @@ function collision(knight, level){
     return 0;       // feet collision
   } else if (level[tyf][txf] === 'B'){
     return 1;       // head collision
-  } else if (level[tyf][thf+1] === 'B'){
-    return 2;       // right collision
-  } else if (level[tyf][thc-1] === 'B'){
-    return 3;       //left collision
+  }
+  // else if (level[tyf][thf+1] === 'B'){
+  //   return 2;       // right collision
+  // } else if (level[tyf][thc-1] === 'B'){
+  //   return 3;       //left collision
+  // }
+
+}
+
+function collisionCoords(knight, level){
+  predictX = knight.x + knight.dx;
+
+  txf = Math.floor((predictX+knight.halfWidth)/TILE);
+  tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
+  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
+
+  thf = Math.floor((predictX)/TILE);
+  thc = Math.ceil((predictX)/TILE);
+
+  if        (level[tyc][txf] === 'B'){
+    return false;       // feet collision
+  } else if (level[tyf][txf] === 'B'){
+    return false;       // head collision
+  } else if (level[tyf][thf+1] === 'B' && knight.dx > 0){
+    return true;       // right collision
+  } else if (level[tyf][thc-1] === 'B' && knight.dx < 0){
+    return true;       //left collision
   }
 
 }
@@ -43,6 +66,7 @@ function leftCollision(knight, level){
 
   if (level[tyf][thc-1] === 'B'){
     return true;       // collision
+    console.log('collision');
   } else {
     return false;      // no collision
   }

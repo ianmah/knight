@@ -13,7 +13,7 @@ let Application = PIXI.Application,
     SPEED = 1.5;
     GRAVITY = .55;
     MAXDY = 10;
-    JUMP = 9;
+    JUMP = 8;
     RESOLUTION = 2;
 
 //Capture the keyboard arrow keys
@@ -181,14 +181,7 @@ document.addEventListener("touchend", touchHandlerEnd);
 document.addEventListener("touchmove", touchHandler);
 
 function play(delta) {
-  //Tile position of knight
-  // console.log(tx + ', ' + ty);
-  if (playerX != null){
-    playerX ? moveLeft() : moveRight();
-  } else {
-    stopRight();
-    stopLeft();
-  }
+
   //Left arrow key `press` method
   left.press = () => {
     moveLeft();
@@ -223,7 +216,11 @@ function play(delta) {
     console.log(knight.x + ', '+ knight.y);
   };
 
-  knight.x = knight.x + knight.dx;
+  if (!collisionCoords(knight, level)){
+    knight.x = knight.x + knight.dx;
+  } else {
+    knight.jumping = false;
+  }
   knight.y = knight.y + knight.dy;
   knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
   knight.ddy = GRAVITY;
@@ -244,20 +241,21 @@ function play(delta) {
         knight.jumping = false;
       }
       break;
-    case 2:
-        knight.dx = 0;                                  // stop vertical motion
-      break;
-    case 3:
-        knight.dx = 0;                                  // stop vertical motion
-      break;
+    // case 2:
+    //     knight.dx = 0;                                  // stop vertical motion
+    //   break;
+    // case 3:
+    //     knight.dx = 0;                                  // stop vertical motion
+    //   break;
   }
 
 }
 
+
 function moveLeft(){
   if (!leftCollision(knight, level)){
-    knight.dx = -SPEED;
   }
+    knight.dx = -SPEED;
 }
 
 function stopLeft(){
@@ -270,8 +268,8 @@ function stopLeft(){
 
 function moveRight(){
   if (!rightCollision(knight, level)){
-    knight.dx = SPEED;
   }
+    knight.dx = SPEED;
 }
 
 function stopRight(){
