@@ -23,6 +23,8 @@ let left = keyboard("ArrowLeft"),
     l = keyboard("l");
     x = keyboard("x");
 
+let user = null;
+
 let level = [
 
   //1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20
@@ -36,7 +38,10 @@ let level = [
   ['O', 'O', 'O', 'B', 'B', 'O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['B', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
-  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],]
+  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],]
 
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -177,25 +182,24 @@ function play(delta) {
 
   //Left arrow key `press` method
   left.press = () => {
-    moveLeft();
+    user.moveLeft();
   };
   //Left arrow key `release` method
   left.release = () => {
-    stopLeft();
+    user.stopLeft();
   };
 
   //Up
   up.press = () => {
-    moveJump();
+    user.moveJump();
   };
-
 
   //Right
   right.press = () => {
-    moveRight();
+    user.moveRight();
   };
   right.release = () => {
-    stopRight();
+    user.stopRight();
   };
 
   //l
@@ -206,7 +210,10 @@ function play(delta) {
 
   //X
   x.press = () => {
-    console.log(knight.x + ', '+ knight.y);
+    let player = new Player('test');
+    user = player;
+    console.log(user);
+    console.log(user.getChar())
   };
 
   if (!collisionX(knight, level)){
@@ -217,7 +224,32 @@ function play(delta) {
   knight.y = knight.y + knight.dy;
   knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
   knight.ddy = GRAVITY;
-  // console.log(knight.dy);
+
+  let char = user.getChar();
+  if (!collisionX(char, level)){
+    char.x = char.x + char.dx;
+  } else {
+    char.jumping = false;
+  }
+  char.y = char.y + char.dy;
+  char.dy = Math.min(char.dy + char.ddy, MAXDY);
+  char.ddy = GRAVITY;
+
+  switch(collisionY(char, level)){
+    case 0: // feet collision
+      if (char.dy != 0){                              // if knight is "falling"
+        char.dy = 0;                                  // stop vertical motion
+        char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+        char.jumping = false;
+      }
+      break;
+    case 1: // head collision
+      if (char.dy != 0){                              // if knight is "falling"
+        char.dy = 0;                                  // stop vertical motion
+        char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+      }
+      break;
+  }
 
   switch(collisionY(knight, level)){
     case 0: // feet collision
@@ -269,12 +301,22 @@ function stopRight(){
 }
 
 function moveJump(){
+  // console.log(knight.dy)
   if (!knight.jumping) {
     knight.jumping = true;
     knight.dy = - JUMP;
   }
 
 }
+
+// setInterval(function(){
+
+  // socket.emit('update', {
+  //   x: knight.x,
+  //   y: knight.y
+  // })
+  // console.log('hi');
+// }, 1000);
 
 socket.on('update', function(data){
   output.innerHTML = '<p>' + data.x + '</p>';
@@ -285,6 +327,62 @@ socket.on('update', function(data){
 let id;
 
 socket.on('id', function(data){
-  console.log(data);
+  console.log('recieved id: ' + data);
+  output.innerHTML += '<p>' + data + '</p>';
   id = data;
 })
+
+class Player {
+
+  constructor(username) {
+    let char;
+    this.username = username;
+    char = new Sprite(resources["images/knight.png"].texture);
+    char.dx = 0;
+    char.dy = 0;
+    char.x = WIDTH/2;
+    char.y = HEIGHT/2;
+    char.halfHeight = char.height/2;
+    char.halfWidth = char.width/2;
+    char.ddy = GRAVITY;
+    app.stage.addChild(char);
+    this.char = char;
+  }
+
+  moveLeft(){
+      this.char.dx = -SPEED;
+  }
+
+  stopLeft(){
+    if (right.isDown){
+      this.moveRight();
+    } else {
+      this.char.dx = 0;
+    }
+  }
+
+  moveRight(){
+      this.char.dx = SPEED;
+  }
+
+  stopRight(){
+    if (left.isDown){
+      this.moveLeft();
+    } else {
+      this.char.dx = 0;
+    }
+  }
+
+  moveJump(){
+    if (!this.char.jumping) {
+      this.char.jumping = true;
+      this.char.dy = - JUMP;
+    }
+
+  }
+
+  getChar(){
+    return this.char;
+  }
+
+}
