@@ -23,14 +23,13 @@ io.on('connection', function(socket){
   io.to(socket.id).emit('id', socket.id);
 
   socket.on('playerUpdate', function(data){
-    if (data.id == users[0]){
-      socket.broadcast.emit('update', data)
-    }
+      io.emit('update', data)
   })
 
-  socket.on('playerNew', function(data){
+  socket.on('newPlayer', function(data){
     players.push(data);
     console.log('added player: ' + data)
+    io.emit('newPlayer', data);
   })
 
 });

@@ -6,9 +6,13 @@ connectBtn.addEventListener('click', connect);
 
 function connect(){
   username = handle.value
-  let player = new Player(username);
-  user = player;
-  socket.emit('playerNew', username);
+  if (username){
+    let player = new Player(username);
+    user = player;
+    socket.emit('newPlayer', username);
+  } else {
+    alert('enter a username')
+  }
 }
 
 class Controller {

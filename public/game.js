@@ -190,6 +190,7 @@ function play(delta) {
   x.press = () => {
     // let player = new Player('test');
     // user = player;
+    console.log(user.username);
   };
 
   if (!collisionX(knight, level)){
@@ -250,6 +251,11 @@ function play(delta) {
         break;
     }
 
+    socket.emit('playerUpdate', {
+      user: user.username,
+      x: char.x,
+      y: char.y
+    })
   }
 
   switch(collisionY(knight, level)){
@@ -269,11 +275,6 @@ function play(delta) {
   }
 
 
-  socket.emit('playerUpdate', {
-    id: id,
-    x: knight.x,
-    y: knight.y
-  })
 
 }
 
@@ -320,9 +321,13 @@ function moveJump(){
 // }, 1000);
 
 socket.on('update', function(data){
-  output.innerHTML = '<p>' + data.x + '</p>';
+  output.innerHTML = '<p>' + data.user + data.x + '</p>';
   knight.x = data.x;
   knight.y = data.y;
+})
+
+socket.on('newPlayer', function(data){
+  let newPlayer = new Player(data);
 })
 
 let id;
