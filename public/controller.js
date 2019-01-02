@@ -4,7 +4,8 @@ var connectBtn = document.getElementById('connect');
 connectBtn.addEventListener('click', connect);
 
 function connect(){
-  
+    let player = new Player('test');
+    user = player;
 }
 
 class Controller {

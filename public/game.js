@@ -180,28 +180,6 @@ document.addEventListener("touchmove", touchHandler);
 
 function play(delta) {
 
-  //Left arrow key `press` method
-  left.press = () => {
-    user.moveLeft();
-  };
-  //Left arrow key `release` method
-  left.release = () => {
-    user.stopLeft();
-  };
-
-  //Up
-  up.press = () => {
-    user.moveJump();
-  };
-
-  //Right
-  right.press = () => {
-    user.moveRight();
-  };
-  right.release = () => {
-    user.stopRight();
-  };
-
   //l
   l.press = () => {
     knight.x = WIDTH/2;
@@ -212,8 +190,6 @@ function play(delta) {
   x.press = () => {
     let player = new Player('test');
     user = player;
-    console.log(user);
-    console.log(user.getChar())
   };
 
   if (!collisionX(knight, level)){
@@ -225,30 +201,55 @@ function play(delta) {
   knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
   knight.ddy = GRAVITY;
 
-  let char = user.getChar();
-  if (!collisionX(char, level)){
-    char.x = char.x + char.dx;
-  } else {
-    char.jumping = false;
-  }
-  char.y = char.y + char.dy;
-  char.dy = Math.min(char.dy + char.ddy, MAXDY);
-  char.ddy = GRAVITY;
+  if (user != null){
+    //Left arrow key `press` method
+    left.press = () => {
+      user.moveLeft();
+    };
+    //Left arrow key `release` method
+    left.release = () => {
+      user.stopLeft();
+    };
 
-  switch(collisionY(char, level)){
-    case 0: // feet collision
-      if (char.dy != 0){                              // if knight is "falling"
-        char.dy = 0;                                  // stop vertical motion
-        char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
-        char.jumping = false;
-      }
-      break;
-    case 1: // head collision
-      if (char.dy != 0){                              // if knight is "falling"
-        char.dy = 0;                                  // stop vertical motion
-        char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
-      }
-      break;
+    //Up
+    up.press = () => {
+      user.moveJump();
+    };
+
+    //Right
+    right.press = () => {
+      user.moveRight();
+    };
+    right.release = () => {
+      user.stopRight();
+    };
+
+    let char = user.getChar();
+    if (!collisionX(char, level)){
+      char.x = char.x + char.dx;
+    } else {
+      char.jumping = false;
+    }
+    char.y = char.y + char.dy;
+    char.dy = Math.min(char.dy + char.ddy, MAXDY);
+    char.ddy = GRAVITY;
+
+    switch(collisionY(char, level)){
+      case 0: // feet collision
+        if (char.dy != 0){                              // if knight is "falling"
+          char.dy = 0;                                  // stop vertical motion
+          char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+          char.jumping = false;
+        }
+        break;
+      case 1: // head collision
+        if (char.dy != 0){                              // if knight is "falling"
+          char.dy = 0;                                  // stop vertical motion
+          char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+        }
+        break;
+    }
+
   }
 
   switch(collisionY(knight, level)){
@@ -328,7 +329,6 @@ let id;
 
 socket.on('id', function(data){
   console.log('recieved id: ' + data);
-  output.innerHTML += '<p>' + data + '</p>';
   id = data;
 })
 
