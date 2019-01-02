@@ -11,6 +11,7 @@ var server = app.listen(4000, function(){
 app.use(express.static('public'));
 
 var users = [];
+var players = [];
 
 // Socket Setup
 var io = socket(server);
@@ -25,6 +26,11 @@ io.on('connection', function(socket){
     if (data.id == users[0]){
       socket.broadcast.emit('update', data)
     }
+  })
+
+  socket.on('playerNew', function(data){
+    players.push(data);
+    console.log('added player: ' + data)
   })
 
 });

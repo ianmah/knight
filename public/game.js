@@ -188,8 +188,8 @@ function play(delta) {
 
   //X
   x.press = () => {
-    let player = new Player('test');
-    user = player;
+    // let player = new Player('test');
+    // user = player;
   };
 
   if (!collisionX(knight, level)){

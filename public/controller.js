@@ -1,11 +1,14 @@
 
 
 var connectBtn = document.getElementById('connect');
+var handle = document.getElementById('handle');
 connectBtn.addEventListener('click', connect);
 
 function connect(){
-    let player = new Player('test');
-    user = player;
+  username = handle.value
+  let player = new Player(username);
+  user = player;
+  socket.emit('playerNew', username);
 }
 
 class Controller {
