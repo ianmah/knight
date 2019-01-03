@@ -23,7 +23,8 @@ let left = keyboard("ArrowLeft"),
     l = keyboard("l");
     x = keyboard("x");
 
-let user = null;
+let user = null,
+    username = null;
 
 let level = [
 
@@ -201,16 +202,22 @@ function play(delta) {
 
 }
 
-var players = [];
+var players = [],
+    playerObjs = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
     let player = data[i].player;
-    if (players.indexOf(player) == -1){
+    if (players.indexOf(player) == -1 && player != username){
       console.log('new player found');
       players.push(player);
-    } else {
-
+      let opponent = new Player(player);
+      playerObjs.push(opponent)
+      console.log(playerObjs);
+    } else if (player != username) {
+      console.log(data);
+      playerObjs[0].char.x = data[0].x;
+      playerObjs[0].char.y = data[0].y;
     }
   }
 })
