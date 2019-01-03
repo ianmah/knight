@@ -202,8 +202,8 @@ function play(delta) {
 
 }
 
-var players = [],
-    playerObjs = [];
+var players = [];
+var playerObjs = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
@@ -235,6 +235,11 @@ socket.on('newPlayer', function(data){
 
 socket.on('playerAlreadyExist', function(data){
   alert('User already exists');
+})
+
+socket.on('load', function(data){
+  players = [];
+  playerObjs = [];
 })
 
 let id;

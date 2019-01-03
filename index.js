@@ -42,6 +42,10 @@ io.on('connection', function(socket){
     }
   })
 
+  socket.on('load', function(){
+    io.to(socket.id).emit('load');
+  })
+
 });
 
 function contains(player){
