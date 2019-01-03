@@ -199,7 +199,6 @@ function play(delta) {
     })
   }
 
-
 }
 
 var players = [];
@@ -209,13 +208,11 @@ socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
     let player = data[i].player;
     if (players.indexOf(player) == -1 && player != username){
-      console.log('new player found');
       players.push(player);
       let opponent = new Player(player);
       playerObjs.push(opponent)
       console.log(playerObjs);
     } else if (player != username) {
-      //console.log(data);
       playerObjs[i].char.x = data[i].x;
       playerObjs[i].char.y = data[i].y;
     }
@@ -224,12 +221,10 @@ socket.on('update', function(data){
 
 socket.on('newPlayer', function(data){
   if (data == username){
-    console.log('play as new player');
     let player = new Player(username);
     playerObjs.push(players)
     user = player;
   } else {
-    console.log('spectate new player');
   }
 })
 
@@ -237,6 +232,8 @@ socket.on('playerAlreadyExist', function(data){
   alert('User already exists');
 })
 
+// Socket loads faster than pixi
+// Empty player list so it can check for new additions again
 socket.on('load', function(data){
   players = [];
   playerObjs = [];

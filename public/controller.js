@@ -27,7 +27,6 @@ class Controller {
 
 }
 
-
 function keyboard(value) {
   let key = {};
   key.value = value;
