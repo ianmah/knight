@@ -106,15 +106,15 @@ function setup() {
   app.stage.addChild(floor);
 
   //Create the knight sprite
-  knight = new Sprite(resources["images/knight.png"].texture);
-  knight.dx = 0;
-  knight.dy = 0;
-  knight.x = WIDTH/2;
-  knight.y = HEIGHT/2;
-  knight.halfHeight = knight.height/2;
-  knight.halfWidth = knight.width/2;
-  knight.ddy = GRAVITY;
-  app.stage.addChild(knight);
+  // knight = new Sprite(resources["images/knight.png"].texture);
+  // knight.dx = 0;
+  // knight.dy = 0;
+  // knight.x = WIDTH/2;
+  // knight.y = HEIGHT/2;
+  // knight.halfHeight = knight.height/2;
+  // knight.halfWidth = knight.width/2;
+  // knight.ddy = GRAVITY;
+  // app.stage.addChild(knight);
 
   //Create the mon sprite
   mon = new Sprite(resources["images/mon.png"].texture);
@@ -138,45 +138,45 @@ function gameLoop(delta){
   state(delta);
 }
 
-function touchHandlerStart(e) {
-    if(e.touches) {
-        initX = e.touches[0].pageX;
-        initY = e.touches[0].pageY;
-        console.log(initX + ', ' + initY)
-        //output.innerHTML = "Touch: "+ " x: " + initX + ", y: " + initY;
-        e.preventDefault();
-    }
-}
-function touchHandlerEnd(e) {
-    if(e.touches) {
-      playerX = null;
-      playerY = null;
-      console.log('end');
-      initX = null;
-      initY = null;
-    }
-}
-function touchHandler(e) {
-    if(e.touches) {
-      console.log()
-        if (initX - e.touches[0].pageX > 0){
-          playerX = true;
-        } else {
-          playerX = false;
-        }
-        if (initY - e.touches[0].pageY > 0){
-          playerY = true;
-        } else {
-          playerY = false;
-        }
-        output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
-        e.preventDefault();
-    }
-}
-
-document.addEventListener("touchstart", touchHandlerStart);
-document.addEventListener("touchend", touchHandlerEnd);
-document.addEventListener("touchmove", touchHandler);
+// function touchHandlerStart(e) {
+//     if(e.touches) {
+//         initX = e.touches[0].pageX;
+//         initY = e.touches[0].pageY;
+//         console.log(initX + ', ' + initY)
+//         //output.innerHTML = "Touch: "+ " x: " + initX + ", y: " + initY;
+//         e.preventDefault();
+//     }
+// }
+// function touchHandlerEnd(e) {
+//     if(e.touches) {
+//       playerX = null;
+//       playerY = null;
+//       console.log('end');
+//       initX = null;
+//       initY = null;
+//     }
+// }
+// function touchHandler(e) {
+//     if(e.touches) {
+//       console.log()
+//         if (initX - e.touches[0].pageX > 0){
+//           playerX = true;
+//         } else {
+//           playerX = false;
+//         }
+//         if (initY - e.touches[0].pageY > 0){
+//           playerY = true;
+//         } else {
+//           playerY = false;
+//         }
+//         output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
+//         e.preventDefault();
+//     }
+// }
+//
+// document.addEventListener("touchstart", touchHandlerStart);
+// document.addEventListener("touchend", touchHandlerEnd);
+// document.addEventListener("touchmove", touchHandler);
 
 function play(delta) {
 
@@ -193,14 +193,14 @@ function play(delta) {
     console.log(user.username);
   };
 
-  if (!collisionX(knight, level)){
-    knight.x = knight.x + knight.dx;
-  } else {
-    knight.jumping = false;
-  }
-  knight.y = knight.y + knight.dy;
-  knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
-  knight.ddy = GRAVITY;
+  // if (!collisionX(knight, level)){
+  //   knight.x = knight.x + knight.dx;
+  // } else {
+  //   knight.jumping = false;
+  // }
+  // knight.y = knight.y + knight.dy;
+  // knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
+  // knight.ddy = GRAVITY;
 
   if (user != null){
     //Left arrow key `press` method
@@ -258,23 +258,21 @@ function play(delta) {
     })
   }
 
-  switch(collisionY(knight, level)){
-    case 0: // feet collision
-      if (knight.dy != 0){                              // if knight is "falling"
-        knight.dy = 0;                                  // stop vertical motion
-        knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
-        knight.jumping = false;
-      }
-      break;
-    case 1: // head collision
-      if (knight.dy != 0){                              // if knight is "falling"
-        knight.dy = 0;                                  // stop vertical motion
-        knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
-      }
-      break;
-  }
-
-
+  // switch(collisionY(knight, level)){
+  //   case 0: // feet collision
+  //     if (knight.dy != 0){                              // if knight is "falling"
+  //       knight.dy = 0;                                  // stop vertical motion
+  //       knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
+  //       knight.jumping = false;
+  //     }
+  //     break;
+  //   case 1: // head collision
+  //     if (knight.dy != 0){                              // if knight is "falling"
+  //       knight.dy = 0;                                  // stop vertical motion
+  //       knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
+  //     }
+  //     break;
+  // }
 
 }
 
@@ -311,23 +309,34 @@ function moveJump(){
 
 }
 
-// setInterval(function(){
-
-  // socket.emit('update', {
-  //   x: knight.x,
-  //   y: knight.y
-  // })
-  // console.log('hi');
-// }, 1000);
+var players = [];
 
 socket.on('update', function(data){
-  output.innerHTML = '<p>' + data.user + data.x + '</p>';
-  knight.x = data.x;
-  knight.y = data.y;
+  for (i = 0; i < data.length; i++){
+    let player = data[i].player;
+    if (players.indexOf(player) == -1){
+      console.log('new player found');
+      players.push(player);
+      if (player != username){
+        let newPlayer = new Player(player);
+      }
+      console.log(players);
+    } else {
+
+    }
+  }
 })
 
 socket.on('newPlayer', function(data){
-  let newPlayer = new Player(data);
+  console.log('new player');
+  if (data == username){
+    let player = new Player(username);
+    user = player;
+  }
+})
+
+socket.on('playerAlreadyExist', function(data){
+  alert('User already exists');
 })
 
 let id;
