@@ -215,9 +215,9 @@ socket.on('update', function(data){
       playerObjs.push(opponent)
       console.log(playerObjs);
     } else if (player != username) {
-      console.log(data);
-      playerObjs[0].char.x = data[0].x;
-      playerObjs[0].char.y = data[0].y;
+      //console.log(data);
+      playerObjs[i].char.x = data[i].x;
+      playerObjs[i].char.y = data[i].y;
     }
   }
 })
@@ -226,6 +226,7 @@ socket.on('newPlayer', function(data){
   if (data == username){
     console.log('play as new player');
     let player = new Player(username);
+    playerObjs.push(players)
     user = player;
   } else {
     console.log('spectate new player');

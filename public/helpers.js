@@ -35,3 +35,14 @@ function collisionX(knight, level){
   }
 
 }
+
+// Takes an array of player objects and a keyword
+// Returns index of player object with player name keyword
+function find(array, key){
+  for (i = 0; i < array.length; i++){
+    if (array[i].username == key){
+      return i;
+    }
+  }
+  return -1;
+}
