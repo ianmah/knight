@@ -106,15 +106,15 @@ function setup() {
   app.stage.addChild(floor);
 
   //Create the knight sprite
-  // knight = new Sprite(resources["images/knight.png"].texture);
-  // knight.dx = 0;
-  // knight.dy = 0;
-  // knight.x = WIDTH/2;
-  // knight.y = HEIGHT/2;
-  // knight.halfHeight = knight.height/2;
-  // knight.halfWidth = knight.width/2;
-  // knight.ddy = GRAVITY;
-  // app.stage.addChild(knight);
+  knight = new Sprite(resources["images/knight.png"].texture);
+  knight.dx = 0;
+  knight.dy = 0;
+  knight.x = WIDTH/2;
+  knight.y = HEIGHT/2;
+  knight.halfHeight = knight.height/2;
+  knight.halfWidth = knight.width/2;
+  knight.ddy = GRAVITY;
+  app.stage.addChild(knight);
 
   //Create the mon sprite
   mon = new Sprite(resources["images/mon.png"].texture);
@@ -193,14 +193,14 @@ function play(delta) {
     console.log(user.username);
   };
 
-  // if (!collisionX(knight, level)){
-  //   knight.x = knight.x + knight.dx;
-  // } else {
-  //   knight.jumping = false;
-  // }
-  // knight.y = knight.y + knight.dy;
-  // knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
-  // knight.ddy = GRAVITY;
+  if (!collisionX(knight, level)){
+    knight.x = knight.x + knight.dx;
+  } else {
+    knight.jumping = false;
+  }
+  knight.y = knight.y + knight.dy;
+  knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
+  knight.ddy = GRAVITY;
 
   if (user != null){
     //Left arrow key `press` method
@@ -258,21 +258,23 @@ function play(delta) {
     })
   }
 
-  // switch(collisionY(knight, level)){
-  //   case 0: // feet collision
-  //     if (knight.dy != 0){                              // if knight is "falling"
-  //       knight.dy = 0;                                  // stop vertical motion
-  //       knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
-  //       knight.jumping = false;
-  //     }
-  //     break;
-  //   case 1: // head collision
-  //     if (knight.dy != 0){                              // if knight is "falling"
-  //       knight.dy = 0;                                  // stop vertical motion
-  //       knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
-  //     }
-  //     break;
-  // }
+  switch(collisionY(knight, level)){
+    case 0: // feet collision
+      if (knight.dy != 0){                              // if knight is "falling"
+        knight.dy = 0;                                  // stop vertical motion
+        knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
+        knight.jumping = false;
+      }
+      break;
+    case 1: // head collision
+      if (knight.dy != 0){                              // if knight is "falling"
+        knight.dy = 0;                                  // stop vertical motion
+        knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
+      }
+      break;
+  }
+
+
 
 }
 
@@ -313,18 +315,15 @@ var players = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
-    let player = data[i].player;
-    if (players.indexOf(player) == -1){
+    if (players.indexOf(data[i].player) == -1){
       console.log('new player found');
-      players.push(player);
-      if (player != username){
-        let newPlayer = new Player(player);
-      }
-      console.log(players);
+      players.push(data[i].player);
+      console.log(data);
     } else {
 
     }
   }
+  console.log(players);
 })
 
 socket.on('newPlayer', function(data){
