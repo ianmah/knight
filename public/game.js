@@ -105,17 +105,6 @@ function setup() {
   floor.position.set(0, -2)
   app.stage.addChild(floor);
 
-  //Create the knight sprite
-  knight = new Sprite(resources["images/knight.png"].texture);
-  knight.dx = 0;
-  knight.dy = 0;
-  knight.x = WIDTH/2;
-  knight.y = HEIGHT/2;
-  knight.halfHeight = knight.height/2;
-  knight.halfWidth = knight.width/2;
-  knight.ddy = GRAVITY;
-  app.stage.addChild(knight);
-
   //Create the mon sprite
   mon = new Sprite(resources["images/mon.png"].texture);
   mon.x = WIDTH/2;
@@ -138,52 +127,12 @@ function gameLoop(delta){
   state(delta);
 }
 
-// function touchHandlerStart(e) {
-//     if(e.touches) {
-//         initX = e.touches[0].pageX;
-//         initY = e.touches[0].pageY;
-//         console.log(initX + ', ' + initY)
-//         //output.innerHTML = "Touch: "+ " x: " + initX + ", y: " + initY;
-//         e.preventDefault();
-//     }
-// }
-// function touchHandlerEnd(e) {
-//     if(e.touches) {
-//       playerX = null;
-//       playerY = null;
-//       console.log('end');
-//       initX = null;
-//       initY = null;
-//     }
-// }
-// function touchHandler(e) {
-//     if(e.touches) {
-//       console.log()
-//         if (initX - e.touches[0].pageX > 0){
-//           playerX = true;
-//         } else {
-//           playerX = false;
-//         }
-//         if (initY - e.touches[0].pageY > 0){
-//           playerY = true;
-//         } else {
-//           playerY = false;
-//         }
-//         output.innerHTML = "Touch: "+ " x: " + playerX + ", y: " + playerY;
-//         e.preventDefault();
-//     }
-// }
-//
-// document.addEventListener("touchstart", touchHandlerStart);
-// document.addEventListener("touchend", touchHandlerEnd);
-// document.addEventListener("touchmove", touchHandler);
-
 function play(delta) {
 
   //l
   l.press = () => {
-    knight.x = WIDTH/2;
-    knight.y = HEIGHT/2;
+    // knight.x = WIDTH/2;
+    // knight.y = HEIGHT/2;
   };
 
   //X
@@ -192,15 +141,6 @@ function play(delta) {
     // user = player;
     console.log(user.username);
   };
-
-  if (!collisionX(knight, level)){
-    knight.x = knight.x + knight.dx;
-  } else {
-    knight.jumping = false;
-  }
-  knight.y = knight.y + knight.dy;
-  knight.dy = Math.min(knight.dy + knight.ddy, MAXDY);
-  knight.ddy = GRAVITY;
 
   if (user != null){
     //Left arrow key `press` method
@@ -258,56 +198,6 @@ function play(delta) {
     })
   }
 
-  switch(collisionY(knight, level)){
-    case 0: // feet collision
-      if (knight.dy != 0){                              // if knight is "falling"
-        knight.dy = 0;                                  // stop vertical motion
-        knight.y = (tyc-1)*TILE-knight.halfHeight;        // clamp to position
-        knight.jumping = false;
-      }
-      break;
-    case 1: // head collision
-      if (knight.dy != 0){                              // if knight is "falling"
-        knight.dy = 0;                                  // stop vertical motion
-        knight.y = (tyc)*TILE-knight.halfHeight;        // clamp to position
-      }
-      break;
-  }
-
-
-
-}
-
-function moveLeft(){
-    knight.dx = -SPEED;
-}
-
-function stopLeft(){
-  if (right.isDown){
-    moveRight();
-  } else {
-    knight.dx = 0;
-  }
-}
-
-function moveRight(){
-    knight.dx = SPEED;
-}
-
-function stopRight(){
-  if (left.isDown){
-    moveLeft();
-  } else {
-    knight.dx = 0;
-  }
-}
-
-function moveJump(){
-  // console.log(knight.dy)
-  if (!knight.jumping) {
-    knight.jumping = true;
-    knight.dy = - JUMP;
-  }
 
 }
 
@@ -315,22 +205,23 @@ var players = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
-    if (players.indexOf(data[i].player) == -1){
+    let player = data[i].player;
+    if (players.indexOf(player) == -1){
       console.log('new player found');
-      players.push(data[i].player);
-      console.log(data);
+      players.push(player);
     } else {
 
     }
   }
-  console.log(players);
 })
 
 socket.on('newPlayer', function(data){
-  console.log('new player');
   if (data == username){
+    console.log('play as new player');
     let player = new Player(username);
     user = player;
+  } else {
+    console.log('spectate new player');
   }
 })
 
