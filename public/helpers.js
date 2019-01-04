@@ -1,3 +1,5 @@
+let FLOOR = 'T';
+
 function collisionY(knight, level){
 
   txf = Math.floor((knight.x+knight.halfWidth)/TILE);
@@ -7,9 +9,9 @@ function collisionY(knight, level){
   thf = Math.floor((knight.x)/TILE);
   thc = Math.ceil((knight.x)/TILE);
 
-  if        (level[tyc][txf] === 'B'){
+  if        (level[tyc][txf] === FLOOR){
     return 0;       // feet collision
-  } else if (level[tyf][txf] === 'B'){
+  } else if (level[tyf][txf] === FLOOR){
     return 1;       // head collision
   }
 }
@@ -24,13 +26,13 @@ function collisionX(knight, level){
   thf = Math.floor((predictX)/TILE);
   thc = Math.ceil((predictX)/TILE);
 
-  if        (level[tyc][txf] === 'B'){
+  if        (level[tyc][txf] === FLOOR){
     return false;       // feet collision
-  } else if (level[tyf][txf] === 'B'){
+  } else if (level[tyf][txf] === FLOOR){
     return false;       // head collision
-  } else if (level[tyf][thf+1] === 'B' && knight.dx > 0){
+  } else if (level[tyf][thf+1] === FLOOR && knight.dx > 0){
     return true;       // right collision
-  } else if (level[tyf][thc-1] === 'B' && knight.dx < 0){
+  } else if (level[tyf][thc-1] === FLOOR && knight.dx < 0){
     return true;       //left collision
   }
 

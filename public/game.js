@@ -7,8 +7,8 @@ let Application = PIXI.Application,
     Rectangle = PIXI.Rectangle;
     Container = PIXI.Container;
     TextureCache = PIXI.utils.TextureCache;
-    HEIGHT = 176;
-    WIDTH = 320;
+    HEIGHT = 256;
+    WIDTH = 480;
     TILE = 16;
     SPEED = 1.5;
     GRAVITY = .55;
@@ -40,11 +40,32 @@ let level = [
   ['O', 'O', 'O', 'B', 'B', 'O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['O', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
   ['B', 'O', 'O', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B', 'O', 'O',],
-  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
-  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],]
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
+  ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],]
 
+$(document).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: "assets/platform2.txt",
+        dataType: "text",
+        success: function(data) {loadLevel(data);}
+     });
+});
+
+function loadLevel(allText) {
+  level = [];
+  var rows = allText.split(/\n/);
+  for (i = 0; i < rows.length; i++){
+    var columns = rows[i].split(',');
+    if (columns.length > 1){
+      level.push(columns);
+    }
+  }
+}
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -82,11 +103,11 @@ let floor = new Container();
 //This `setup` function will run when the image has loaded
 function setup() {
   //Create the `tileset` sprite from the texture
-  let texture = TextureCache["images/tiles.png"];
+  let texture = TextureCache["images/tileset.png"];
   //Create a rectangle object that defines the position and
   //size of the sub-image you want to extract from the texture
   //(`Rectangle` is an alias for `PIXI.Rectangle`)
-  let rectangle = new Rectangle(96, 0, 16, 16);
+  let rectangle = new Rectangle(16, 0, 16, 16);
   //Tell the texture to use that rectangular section
   texture.frame = rectangle;
 
@@ -97,7 +118,7 @@ function setup() {
     for (j = 0; j < level[i].length; j++){
       x = j*TILE;
       let tile = level[i][j];
-      if (tile === 'B'){
+      if (tile === 'T'){
           let brick = new Sprite(texture);
           brick.x = x;
           brick.y = y;
