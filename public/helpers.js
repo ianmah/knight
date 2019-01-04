@@ -49,7 +49,7 @@ function find(array, key){
   return -1;
 }
 
-let tiles = ['T', 'E', 'M', 'L', 'R', 'Z', 'Y'];
+let tiles = ['T', 'E', 'M', 'L', 'R', 'Z', 'Y', 'a', 'd', 'c', 'v', 'j', 'k'];
 function blockTile(x){
   for (i = 0; i < tiles.length; i++){
     if (x == tiles[i]){

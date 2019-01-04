@@ -117,6 +117,12 @@ function setup() {
   let toprightS    = new PIXI.Texture(base.baseTexture, rectangle(2, 0, 1, 1));
   let bottomleftS  = new PIXI.Texture(base.baseTexture, rectangle(0, 2, 1, 1));
   let bottomrightS = new PIXI.Texture(base.baseTexture, rectangle(2, 2, 1, 1));
+  let lS   = new PIXI.Texture(base.baseTexture, rectangle(0, 1, 1, 1));
+  let rS   = new PIXI.Texture(base.baseTexture, rectangle(2, 1, 1, 1));
+  let tlcS = new PIXI.Texture(base.baseTexture, rectangle(6, 0, 1, 1));
+  let trcS = new PIXI.Texture(base.baseTexture, rectangle(4, 1, 1, 1));
+  let blcS = new PIXI.Texture(base.baseTexture, rectangle(5, 0, 1, 1));
+  let brcS = new PIXI.Texture(base.baseTexture, rectangle(4, 0, 1, 1));
 
   var x;
   var y;
@@ -157,6 +163,36 @@ function setup() {
           floor.addChild(brick);
       } else if (tile === 'Z'){
           let brick = new Sprite(bottomleftS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'a'){
+          let brick = new Sprite(lS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'd'){
+          let brick = new Sprite(rS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'c'){
+          let brick = new Sprite(tlcS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'v'){
+          let brick = new Sprite(trcS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'j'){
+          let brick = new Sprite(blcS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'k'){
+          let brick = new Sprite(brcS);
           brick.x = x;
           brick.y = y;
           floor.addChild(brick);
