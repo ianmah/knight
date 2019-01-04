@@ -107,10 +107,10 @@ function setup() {
   app.stage.addChild(floor);
 
   //Create the mon sprite
-  mon = new Sprite(resources["images/mon.png"].texture);
-  mon.x = WIDTH/2;
-  mon.y = 100;
-  app.stage.addChild(mon);
+  // mon = new Sprite(resources["images/mon.png"].texture);
+  // mon.x = WIDTH/2;
+  // mon.y = 100;
+  // app.stage.addChild(mon);
 
   //Render the stage
   app.renderer.render(app.stage);
@@ -222,7 +222,7 @@ socket.on('update', function(data){
 socket.on('newPlayer', function(data){
   if (data == username){
     let player = new Player(username);
-    playerObjs.push(players)
+    playerObjs.push(player)
     user = player;
   } else {
   }
@@ -239,10 +239,17 @@ socket.on('load', function(data){
   playerObjs = [];
 })
 
+socket.on('reset', function(data){
+  for (i = 0; i < playerObjs.length; i++){
+    playerObjs[i].delete();
+  }
+  players = [];
+  playerObjs = [];
+})
+
 let id;
 
 socket.on('id', function(data){
-  console.log('recieved id: ' + data);
   id = data;
 })
 
@@ -297,6 +304,11 @@ class Player {
 
   getChar(){
     return this.char;
+  }
+
+  delete(){
+    app.stage.removeChild(this.char);
+    this.char.visible = false;
   }
 
 }

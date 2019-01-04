@@ -46,6 +46,18 @@ io.on('connection', function(socket){
     io.to(socket.id).emit('load');
   })
 
+  socket.on('reset', function(){
+    console.log('reset');
+    io.emit('reset');
+    users = [];
+    players = [];
+  })
+
+  socket.on('disconnect', function(){
+    console.log(socket.id + ' disconnected');
+    socket.emit('disonnected', socket.id);
+  })
+
 });
 
 function contains(player){

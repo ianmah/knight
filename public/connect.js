@@ -7,4 +7,4 @@ console.log(url)
 
 setTimeout(function(){
   socket.emit('load')
-}, 1000);
+}, 500);
