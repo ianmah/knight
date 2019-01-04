@@ -20,6 +20,7 @@ let Application = PIXI.Application,
 let left = keyboard("ArrowLeft"),
     up = keyboard("ArrowUp"),
     right = keyboard("ArrowRight");
+    z = keyboard("z");
     l = keyboard("l");
     x = keyboard("x");
 
@@ -68,8 +69,10 @@ document.body.appendChild(app.view);
 //load an image and run the `setup` function when it's done
 loader
   .add("images/knight.png")
-  .add("images/mon.png")
+  .add("images/arrow.png")
+  //.add("images/mon.png")
   .add("images/tiles.png")
+  .add("images/tileset.png")
   .load(setup);
 
 let knight, state, mon;
@@ -130,17 +133,17 @@ function gameLoop(delta){
 
 function play(delta) {
 
-  //l
   l.press = () => {
-    // knight.x = WIDTH/2;
-    // knight.y = HEIGHT/2;
+
   };
 
-  //X
   x.press = () => {
-    // let player = new Player('test');
-    // user = player;
-    console.log(user.username);
+
+  };
+
+  z.press = () => {
+    let arrow = new Bullet(username);
+    console.log('bullet');
   };
 
   if (user != null){
@@ -309,6 +312,25 @@ class Player {
   delete(){
     app.stage.removeChild(this.char);
     this.char.visible = false;
+  }
+
+}
+
+class Bullet {
+
+  constructor(user) {
+    let arrow;
+    this.owner = user;
+    arrow = new Sprite(resources["images/arrow.png"].texture);
+    arrow.dx = 0;
+    arrow.dy = 0;
+    arrow.x = WIDTH/2;
+    arrow.y = HEIGHT/2;
+    arrow.halfHeight = arrow.height/2;
+    arrow.halfWidth = arrow.width/2;
+    arrow.ddy = GRAVITY;
+    app.stage.addChild(arrow);
+    this.arrow = arrow;
   }
 
 }
