@@ -60,7 +60,7 @@ function loadLevel(allText) {
   level = [];
   var rows = allText.split(/\n/);
   for (i = 0; i < rows.length; i++){
-    var columns = rows[i].split(',');
+    var columns = rows[i].split(/\t/);
     if (columns.length > 1){
       level.push(columns);
     }
