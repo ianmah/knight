@@ -4,7 +4,7 @@ let Application = PIXI.Application,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite;
     type = "WebGL";
-    Rectangle = PIXI.Rectangle;
+    //Rectangle = PIXI.Rectangle;
     Container = PIXI.Container;
     TextureCache = PIXI.utils.TextureCache;
     HEIGHT = 256;
@@ -103,13 +103,20 @@ let floor = new Container();
 //This `setup` function will run when the image has loaded
 function setup() {
   //Create the `tileset` sprite from the texture
-  let texture = TextureCache["images/tileset.png"];
-  //Create a rectangle object that defines the position and
-  //size of the sub-image you want to extract from the texture
-  //(`Rectangle` is an alias for `PIXI.Rectangle`)
-  let rectangle = new Rectangle(16, 0, 16, 16);
-  //Tell the texture to use that rectangular section
-  texture.frame = rectangle;
+  let base        = TextureCache["images/tileset.png"];
+
+  function rectangle(x, y, h, w){
+    let rectangle = new PIXI.Rectangle(x*TILE, y*TILE, h*TILE, w*TILE);
+    return rectangle;
+  }
+
+  let topS         = new PIXI.Texture(base.baseTexture, rectangle(1, 0, 1, 1));
+  let bottomS      = new PIXI.Texture(base.baseTexture, rectangle(1, 2, 1, 1));
+  let middleS      = new PIXI.Texture(base.baseTexture, rectangle(1, 1, 1, 1));
+  let topleftS     = new PIXI.Texture(base.baseTexture, rectangle(0, 0, 1, 1));
+  let toprightS    = new PIXI.Texture(base.baseTexture, rectangle(2, 0, 1, 1));
+  let bottomleftS  = new PIXI.Texture(base.baseTexture, rectangle(0, 2, 1, 1));
+  let bottomrightS = new PIXI.Texture(base.baseTexture, rectangle(2, 2, 1, 1));
 
   var x;
   var y;
@@ -118,8 +125,38 @@ function setup() {
     for (j = 0; j < level[i].length; j++){
       x = j*TILE;
       let tile = level[i][j];
-      if (tile === 'T'){
-          let brick = new Sprite(texture);
+      if (tile === 'E'){
+          let brick = new Sprite(topS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'T'){
+          let brick = new Sprite(bottomS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'M'){
+          let brick = new Sprite(middleS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'L'){
+          let brick = new Sprite(topleftS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'R'){
+          let brick = new Sprite(toprightS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'Y'){
+          let brick = new Sprite(bottomrightS);
+          brick.x = x;
+          brick.y = y;
+          floor.addChild(brick);
+      } else if (tile === 'Z'){
+          let brick = new Sprite(bottomleftS);
           brick.x = x;
           brick.y = y;
           floor.addChild(brick);
