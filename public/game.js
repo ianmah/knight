@@ -88,6 +88,8 @@ let app = new PIXI.Application({
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
+app.stage.position.x -= 2*TILE;
+app.stage.position.y -= 2*TILE;
 
 //load an image and run the `setup` function when it's done
 loader
