@@ -328,8 +328,8 @@ class Player {
     char = new Sprite(resources["images/knight.png"].texture);
     char.dx = 0;
     char.dy = 0;
-    char.x = WIDTH/2;
-    char.y = HEIGHT/2;
+    char.x = 7*TILE;
+    char.y = 9*TILE;
     char.halfHeight = char.height/2;
     char.halfWidth = char.width/2;
     char.ddy = GRAVITY;
