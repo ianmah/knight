@@ -132,70 +132,36 @@ function setup() {
       x = j*TILE;
       let tile = level[i][j];
       if (tile === 'E'){
-          let brick = new Sprite(topS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(topS));
       } else if (tile === 'T'){
-          let brick = new Sprite(bottomS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(bottomS));
       } else if (tile === 'M'){
-          let brick = new Sprite(middleS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(middleS));
       } else if (tile === 'L'){
-          let brick = new Sprite(topleftS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(topleftS));
       } else if (tile === 'R'){
-          let brick = new Sprite(toprightS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(toprightS));
       } else if (tile === 'Y'){
-          let brick = new Sprite(bottomrightS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(bottomrightS));
       } else if (tile === 'Z'){
-          let brick = new Sprite(bottomleftS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(bottomleftS));
       } else if (tile === 'a'){
-          let brick = new Sprite(lS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(lS));
       } else if (tile === 'd'){
-          let brick = new Sprite(rS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(rS));
       } else if (tile === 'c'){
-          let brick = new Sprite(tlcS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+        place(new Sprite(tlcS));
       } else if (tile === 'v'){
-          let brick = new Sprite(trcS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+          place(new Sprite(trcS));
       } else if (tile === 'j'){
-          let brick = new Sprite(blcS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+          place(new Sprite(blcS));
       } else if (tile === 'k'){
-          let brick = new Sprite(brcS);
-          brick.x = x;
-          brick.y = y;
-          floor.addChild(brick);
+          place(new Sprite(brcS));
+      }
+      function place(brick){
+        brick.x = x;
+        brick.y = y;
+        floor.addChild(brick);
       }
     }
   }
