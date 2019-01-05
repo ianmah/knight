@@ -28,7 +28,6 @@ let user = null,
     username = null;
 
 let level = [
-
   //1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20
   ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',],
@@ -50,7 +49,7 @@ let level = [
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "assets/platform2.txt",
+        url: "assets/platform22.txt",
         dataType: "text",
         success: function(data) {loadLevel(data);}
      });
@@ -65,7 +64,10 @@ function loadLevel(allText) {
       level.push(columns);
     }
   }
+  transformLevel(level);
+  console.log(level);
 }
+
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
