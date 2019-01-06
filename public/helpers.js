@@ -87,6 +87,14 @@ function transformLevel(level){
       if (isBlock(tile)){
         if        (t12 == AIR && t21 == AIR && isBlock(t23)){
           level[i][j] = 'L'; // top left
+        } else if (isBlock(t12) && isBlock(t21) && t11 == AIR){
+          level[i][j] = 'c'; //
+        } else if (isBlock(t12) && isBlock(t23) && t13 == AIR){
+          level[i][j] = 'v'; //
+        } else if (isBlock(t32) && isBlock(t21) && t31 == AIR){
+          level[i][j] = 'j'; //
+        } else if (isBlock(t32) && isBlock(t23) && t33 == AIR){
+          level[i][j] = 'k'; //
         } else if (isBlock(t21) && isBlock(t23) && isBlock(t12) && isBlock(t32)){
           level[i][j] = 'M'; // middle
         } else if (t12 == AIR && t23 == AIR && isBlock(t21)){

@@ -49,28 +49,28 @@ let level = [
   ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']]
 
-// $(document).ready(function() {
-//     $.ajax({
-//         type: "GET",
-//         url: "assets/platform22.txt",
-//         dataType: "text",
-//         success: function(data) {loadLevel(data);}
-//      });
-// });
-//
-// function loadLevel(allText) {
-//   level = [];
-//   var rows = allText.split(/\n/);
-//   for (i = 0; i < rows.length; i++){
-//     var columns = rows[i].split(/\t/);
-//     if (columns.length > 1){
-//       level.push(columns);
-//     }
-//   }
-//   transformLevel(level);
-//   console.log(level);
-// }
-transformLevel(level);
+$(document).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: "assets/platform22.txt",
+        dataType: "text",
+        success: function(data) {loadLevel(data);}
+     });
+});
+
+function loadLevel(allText) {
+  level = [];
+  var rows = allText.split(/\n/);
+  for (i = 0; i < rows.length; i++){
+    var columns = rows[i].split(/\t/);
+    if (columns.length > 1){
+      level.push(columns);
+    }
+  }
+  transformLevel(level);
+  //console.log(level);
+}
+//transformLevel(level);
 
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -282,7 +282,7 @@ socket.on('update', function(data){
       players.push(player);
       let opponent = new Player(player);
       playerObjs.push(opponent)
-      console.log(playerObjs);
+      //console.log(playerObjs);
     } else if (player != username) {
       playerObjs[i].char.x = data[i].x;
       playerObjs[i].char.y = data[i].y;

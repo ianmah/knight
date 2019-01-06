@@ -29,7 +29,7 @@ io.on('connection', function(socket){
       players[index]["y"] = data.y;
       io.emit('update', players)
     }
-    console.log(players);
+    //console.log(players);
   })
 
   socket.on('newPlayer', function(data){
