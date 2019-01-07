@@ -18,8 +18,8 @@ function collisionX(knight, level){
 
   tyf = Math.floor((knight.y+knight.halfHeight+5)/TILE);
 
-  thf = Math.floor((predictX-knight.halfWidth+1)/TILE);
-  thc = Math.ceil( (predictX+knight.halfWidth-1)/TILE);
+  thf = Math.floor((predictX-knight.halfWidth+2)/TILE);
+  thc = Math.ceil( (predictX+knight.halfWidth-2)/TILE);
 
   if (isBlock(level[tyf][thf+1]) && knight.dx > 0){
     return true;       // right collision
@@ -42,6 +42,7 @@ function find(array, key){
   return -1;
 }
 
+let tiles = ['T', 'E', 'M', 'L', 'R', 'Z', 'Y', 'a', 'd', 'c', 'v', 'j', 'k'];
 function isBlock(x){
   return tiles.indexOf(x) >=0;
 }
