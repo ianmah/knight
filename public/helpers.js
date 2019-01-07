@@ -6,12 +6,9 @@ function collisionY(knight, level){
   tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
   tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
 
-  thf = Math.floor((knight.x-knight.halfWidth)/TILE);
-  thc = Math.ceil((knight.x+knight.halfWidth)/TILE);
-
-  if        (blockTile(level[tyc][txf])){
+  if        (isBlock(level[tyc][txf])){
     return 0;       // feet collision
-  } else if (blockTile(level[tyf][txf])){
+  } else if (isBlock(level[tyf][txf])){
     return 1;       // head collision
   }
 }
@@ -19,16 +16,14 @@ function collisionY(knight, level){
 function collisionX(knight, level){
   predictX = knight.x + knight.dx;
 
-  //txf = Math.floor((predictX+knight.halfWidth)/TILE);
-  //tyc = Math.ceil((knight.y+knight.halfHeight+2)/TILE);
   tyf = Math.floor((knight.y+knight.halfHeight+5)/TILE);
 
   thf = Math.floor((predictX-knight.halfWidth+1)/TILE);
   thc = Math.ceil( (predictX+knight.halfWidth-1)/TILE);
 
-  if (blockTile(level[tyf][thf+1]) && knight.dx > 0){
+  if (isBlock(level[tyf][thf+1]) && knight.dx > 0){
     return true;       // right collision
-  } else if (blockTile(level[tyf][thc-1]) && knight.dx < 0){
+  } else if (isBlock(level[tyf][thc-1]) && knight.dx < 0){
     return true;       //left collision
   } else {
     return false;
@@ -45,16 +40,6 @@ function find(array, key){
     }
   }
   return -1;
-}
-
-let tiles = ['T', 'E', 'M', 'L', 'R', 'Z', 'Y', 'a', 'd', 'c', 'v', 'j', 'k'];
-function blockTile(x){
-  for (i = 0; i < tiles.length; i++){
-    if (x == tiles[i]){
-      return true;
-    }
-  }
-  return false;
 }
 
 function isBlock(x){
