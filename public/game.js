@@ -49,15 +49,16 @@ let level = [
   ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']]
 
-  $(document).ready(function() {
-      // $.ajax({
-      //     type: "GET",
-      //     url: "assets/platform22.txt",
-      //     dataType: "text",
-      //     success: function(data) {loadLevel(data);}
-      //  });
-      $.get("assets/platform22.txt", function(data){ loadLevel(data)})
-  });
+  // $(document).ready(function() {
+  //     // $.ajax({
+  //     //     type: "GET",
+  //     //     url: "assets/platform22.txt",
+  //     //     dataType: "text",
+  //     //     success: function(data) {loadLevel(data);}
+  //     //  });
+  //
+  // });
+$.get("assets/platform22.txt", function(data){ loadLevel(data)})
 
 function loadLevel(allText) {
   level = [];
