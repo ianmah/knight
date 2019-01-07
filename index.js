@@ -1,5 +1,6 @@
 var express = require('express');
 var socket = require('socket.io');
+var uuidv4 = require('uuid/v4');
 
 // App Setup
 var app = express();
@@ -24,10 +25,13 @@ io.on('connection', function(socket){
     if (index != -1){
       players[index]["x"] = data.x;
       players[index]["y"] = data.y;
+      players[index]["dx"] = data.dx;
       io.emit('update', players);
     } else {
         io.emit('update', players);
-      }
+    }
+
+    //socket.broadcast.emit('bulletUpdate', data.bullets);
   })
 
   socket.on('newPlayer', function(data){

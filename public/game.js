@@ -11,7 +11,7 @@ let Application = PIXI.Application,
     HEIGHT = 256;
     WIDTH = 480;
     TILE = 16;
-    SPEED = 1.5;
+    SPEED = 1.66;
     GRAVITY = .55;
     MAXDY = 10;
     JUMP = 7;
@@ -222,7 +222,7 @@ function play(delta) {
   if (bg.tilePosition.x >= bg.width){
     bg.tilePosition.x = 0;
   } else {
-    bg.tilePosition.x +=BG_SPEED*0.25;
+    bg.tilePosition.x +=BG_SPEED*0.36;
   }
 
   l.press = () => {
@@ -317,14 +317,12 @@ function play(delta) {
     socket.emit('playerUpdate', {
       user: user.username,
       x: char.x,
-      y: char.y
+      y: char.y,
+      dx: char.scale.x,
     })
   } else {
 
     socket.emit('playerUpdate', {
-      user: username,
-      x: someloggernumber++,
-      y: 1
     })
 
   }
@@ -344,8 +342,12 @@ socket.on('update', function(data){
       let opponent = new Player(player);
       playerObjs.push(opponent)
     } else if (player != username) {
-      playerObjs[i].char.x = data[i].x;
-      playerObjs[i].char.y = data[i].y;
+
+      let char = playerObjs[i].char;
+      char.x = data[i].x;
+      char.y = data[i].y;
+      char.scale.x = data[i].dx;
+
     }
   }
 })
@@ -482,8 +484,8 @@ class Bullet {
       arrow.x = x+8;
       arrow.y = y;
       if (dx < 0){
-        //character is facing left
-        arrow.x = x-7;
+        //arrow is facing left
+        arrow.x = x-3;
         arrow.scale.x = -1;
       }
       app.stage.addChild(arrow);
