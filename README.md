@@ -18,6 +18,8 @@ midgame join
 ## todo
 touch input
 
+rejoin
+
 fight mechanics
 
 action animations
