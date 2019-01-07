@@ -97,6 +97,7 @@ app.stage.position.y -= 2*TILE;
 
 //load an image and run the `setup` function when it's done
 loader
+  .add("images/bg.png")
   .add("images/knight.png")
   .add("images/arrow.png")
   //.add("images/mon.png")
@@ -110,6 +111,11 @@ let floor = new Container();
 
 //This `setup` function will run when the image has loaded
 function setup() {
+
+  bg = new Sprite(resources["images/bg.png"].texture);
+  bg.y = -25;
+  app.stage.addChild(bg);
+
   //Create the `tileset` sprite from the texture
   let base        = TextureCache["images/tileset.png"];
 
@@ -118,6 +124,7 @@ function setup() {
     return rectangle;
   }
 
+  let grass        = new PIXI.Texture(base.baseTexture, rectangle(8, 2, 1, 1));
   let topS         = new PIXI.Texture(base.baseTexture, rectangle(1, 0, 1, 1));
   let bottomS      = new PIXI.Texture(base.baseTexture, rectangle(1, 2, 1, 1));
   let middleS      = new PIXI.Texture(base.baseTexture, rectangle(1, 1, 1, 1));
@@ -125,6 +132,8 @@ function setup() {
   let toprightS    = new PIXI.Texture(base.baseTexture, rectangle(2, 0, 1, 1));
   let bottomleftS  = new PIXI.Texture(base.baseTexture, rectangle(0, 2, 1, 1));
   let bottomrightS = new PIXI.Texture(base.baseTexture, rectangle(2, 2, 1, 1));
+  let grassL        = new PIXI.Texture(base.baseTexture, rectangle(6, 2, 1, 1));
+  let grassR        = new PIXI.Texture(base.baseTexture, rectangle(9, 2, 1, 1));
   let lS   = new PIXI.Texture(base.baseTexture, rectangle(0, 1, 1, 1));
   let rS   = new PIXI.Texture(base.baseTexture, rectangle(2, 1, 1, 1));
   let tlcS = new PIXI.Texture(base.baseTexture, rectangle(6, 0, 1, 1));
@@ -141,14 +150,17 @@ function setup() {
       let tile = level[i][j];
       if (tile === 'E'){
         place(new Sprite(topS));
+        place(new Sprite(grass));
       } else if (tile === 'T'){
         place(new Sprite(bottomS));
       } else if (tile === 'M'){
         place(new Sprite(middleS));
       } else if (tile === 'L'){
         place(new Sprite(topleftS));
+        place(new Sprite(grassL));
       } else if (tile === 'R'){
         place(new Sprite(toprightS));
+        place(new Sprite(grassR));
       } else if (tile === 'Y'){
         place(new Sprite(bottomrightS));
       } else if (tile === 'Z'){
@@ -159,12 +171,14 @@ function setup() {
         place(new Sprite(rS));
       } else if (tile === 'c'){
         place(new Sprite(tlcS));
+        place(new Sprite(grassR));
       } else if (tile === 'v'){
-          place(new Sprite(trcS));
+        place(new Sprite(trcS));
+        place(new Sprite(grassL));
       } else if (tile === 'j'){
-          place(new Sprite(blcS));
+        place(new Sprite(blcS));
       } else if (tile === 'k'){
-          place(new Sprite(brcS));
+        place(new Sprite(brcS));
       }
       function place(brick){
         brick.x = x;
