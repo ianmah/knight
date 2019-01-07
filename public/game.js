@@ -22,9 +22,9 @@ let Application = PIXI.Application,
 
 //Capture the keyboard arrow keys
 let left = keyboard("ArrowLeft"),
-    up = keyboard("ArrowUp"),
+    up = keyboard(" "),
     right = keyboard("ArrowRight");
-    z = keyboard("z");
+    z = keyboard("f");
     l = keyboard("l");
     x = keyboard("x");
 

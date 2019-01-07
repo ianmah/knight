@@ -30,8 +30,6 @@ io.on('connection', function(socket){
     } else {
         io.emit('update', players);
     }
-
-    //socket.broadcast.emit('bulletUpdate', data.bullets);
   })
 
   socket.on('newPlayer', function(data){
