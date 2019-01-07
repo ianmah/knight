@@ -249,11 +249,23 @@ function play(delta) {
     } else {
       arrow.visible = false;
       let deadArrow = new BulletDead(arrow.x, arrow.y, arrow.dx)
+      bulletsD.push(deadArrow);
       bullets.splice(i, 1);
     }
   }
 
   if (user != null){
+
+    for (i = 0; i < bulletsD.length; i++){
+      let arrow = bulletsD[i].arrow;
+      if(hitTest(user.char, arrow)){
+        arrow.visible = false;
+        bulletsD.splice(i, 1);
+        user.ammo++;
+      }
+    }
+
+
     //Left arrow key `press` method
     left.press = () => {
       user.moveLeft();
@@ -322,6 +334,7 @@ function play(delta) {
 var players = [];
 var playerObjs = [];
 var bullets = [];
+var bulletsD = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
@@ -466,7 +479,7 @@ class Bullet {
       arrow = new Sprite(resources["images/arrow.png"].texture);
       arrow.anchor.x = 0.5;
       arrow.anchor.y = 0.5;
-      arrow.x = x+7;
+      arrow.x = x+8;
       arrow.y = y;
       if (dx < 0){
         //character is facing left
