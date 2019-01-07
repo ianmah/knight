@@ -2,14 +2,16 @@ let FLOOR = 'M';
 
 function collisionY(knight, level){
 
+  // Find two tiles underneath character
   txf = Math.floor((knight.x+knight.halfWidth+1)/TILE);
   txc = Math.ceil((knight.x-knight.halfWidth)/TILE);
+
+  // Find x distance from the two tiles
   dxc = Math.abs(txc-(knight.x+knight.halfWidth)/TILE);
   dxf = Math.abs(txf-(knight.x+knight.halfWidth)/TILE);
 
-  console.log(dxf +  ' ' + dxc);
-
   tx = null;
+  // Find closer tile
   if (dxf < dxc){
     tx = txc;
   } else {
