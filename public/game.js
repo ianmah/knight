@@ -18,6 +18,7 @@ let Application = PIXI.Application,
     RESOLUTION = 2;
     OFFSET = 2*TILE;
     BG_SPEED = .25;
+    AMMO = 4;
 
 //Capture the keyboard arrow keys
 let left = keyboard("ArrowLeft"),
@@ -234,9 +235,12 @@ function play(delta) {
   };
 
   z.press = () => {
-    let arrow = new Bullet(username);
-    console.log('bullet');
-    bullets.push(arrow);
+    if (user.ammo > 0){
+      let arrow = new Bullet(username);
+      user.ammo--;
+      console.log('bullet');
+      bullets.push(arrow);
+    }
   };
 
   for (i = 0; i < bullets.length; i++){
@@ -375,7 +379,7 @@ socket.on('id', function(data){
 class Player {
 
   constructor(username) {
-    this.ammo = 0;
+    this.ammo = AMMO;
     let char;
     this.username = username;
     char = new Sprite(resources["images/knight.png"].texture);
