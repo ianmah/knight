@@ -114,7 +114,6 @@ function setup() {
   cloud1 = new TilingSprite(resources["images/cloudsfront.png"].texture, app.stage.width, app.stage.height);
   cloud1.x = OFFSET;
   app.stage.addChild(cloud1);
-  console.log(app.stage.height);
 
   bg_back = new Sprite(resources["images/bgback.png"].texture);
   bg_back.y -= 15;
@@ -226,7 +225,8 @@ function play(delta) {
   }
 
   l.press = () => {
-
+    user.ammo++;
+    console.log(user.ammo);
   };
 
   x.press = () => {
@@ -236,7 +236,21 @@ function play(delta) {
   z.press = () => {
     let arrow = new Bullet(username);
     console.log('bullet');
+    bullets.push(arrow);
   };
+
+  for (i = 0; i < bullets.length; i++){
+    let arrow = bullets[i].arrow;
+    if (!collisionArrow(arrow, level)){
+      arrow.x += arrow.dx;
+    } else if (arrow.dx > 0){
+      arrow.dx = 0;
+      arrow.x += 7;
+    } else if (arrow.dx < 0) {
+      arrow.dx = 0;
+      arrow.x -= 4;
+    }
+  }
 
   if (user != null){
     //Left arrow key `press` method
@@ -261,7 +275,7 @@ function play(delta) {
       user.stopRight();
     };
 
-    let char = user.getChar();
+    let char = user.char;
     if (!collisionX(char, level)){
       char.x = char.x + char.dx;
     } else {
@@ -306,6 +320,7 @@ function play(delta) {
 
 var players = [];
 var playerObjs = [];
+var bullets = [];
 
 socket.on('update', function(data){
   for (i = 0; i < data.length; i++){
@@ -339,6 +354,7 @@ socket.on('playerAlreadyExist', function(data){
 socket.on('load', function(data){
   players = [];
   playerObjs = [];
+  bullets = [];
 })
 
 socket.on('reset', function(data){
@@ -347,6 +363,7 @@ socket.on('reset', function(data){
   }
   players = [];
   playerObjs = [];
+  bullets = [];
 })
 
 let id;
@@ -358,6 +375,7 @@ socket.on('id', function(data){
 class Player {
 
   constructor(username) {
+    this.ammo = 0;
     let char;
     this.username = username;
     char = new Sprite(resources["images/knight.png"].texture);
@@ -407,10 +425,6 @@ class Player {
 
   }
 
-  getChar(){
-    return this.char;
-  }
-
   delete(){
     app.stage.removeChild(this.char);
     this.char.visible = false;
@@ -424,14 +438,20 @@ class Bullet {
     let arrow;
     this.owner = username;
     arrow = new Sprite(resources["images/arrow.png"].texture);
-    arrow.dx = 0;
+    arrow.dx = SPEED*6;
     arrow.dy = 0;
+    arrow.anchor.x = 0.5;
+    arrow.anchor.y = 0.5;
+    if (user.char.scale.x < 0){
+      //character is facing left
+      arrow.scale.x = -1;
+      arrow.dx *= -1;
+    }
     arrow.x = user.char.x;
-    arrow.y = user.char.y;
-    console.log(arrow.x + ' ' + arrow.y);
+    arrow.y = user.char.y + user.char.halfHeight;
     arrow.halfHeight = arrow.height/2;
     arrow.halfWidth = arrow.width/2;
-    arrow.ddy = GRAVITY;
+    arrow.ddx = GRAVITY;
     app.stage.addChild(arrow);
     this.arrow = arrow;
   }

@@ -46,6 +46,24 @@ function collisionX(knight, level){
 
 }
 
+function collisionArrow(arrow, level){
+  predictX = arrow.x-arrow.halfWidth + arrow.dx;
+
+  tyf = Math.floor((arrow.y+arrow.halfHeight+1)/TILE);
+
+  thf = Math.floor((predictX-arrow.halfWidth)/TILE);
+  thc = Math.ceil( (predictX+arrow.halfWidth)/TILE);
+
+  if        (isBlock(level[tyf][thf+1]) && arrow.dx > 0){
+    return true;       // right collision
+  } else if (isBlock(level[tyf][thc-1]) && arrow.dx < 0){
+    return true;       //left collision
+  } else {
+    return false;
+  }
+
+}
+
 // Takes an array of player objects and a keyword
 // Returns index of player object with player name keyword
 function find(array, key){
