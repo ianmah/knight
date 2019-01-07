@@ -49,14 +49,15 @@ let level = [
   ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']]
 
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "assets/platform22.txt",
-        dataType: "text",
-        success: function(data) {loadLevel(data);}
-     });
-});
+  $(document).ready(function() {
+      // $.ajax({
+      //     type: "GET",
+      //     url: "assets/platform22.txt",
+      //     dataType: "text",
+      //     success: function(data) {loadLevel(data);}
+      //  });
+      $.get("assets/platform22.txt", function(data){ loadLevel(data)})
+  });
 
 function loadLevel(allText) {
   level = [];
@@ -68,10 +69,8 @@ function loadLevel(allText) {
     }
   }
   transformLevel(level);
-  //console.log(level);
 }
-//transformLevel(level);
-
+transformLevel(level);
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -190,12 +189,6 @@ function setup() {
 
   floor.position.set(0, -2)
   app.stage.addChild(floor);
-
-  //Create the mon sprite
-  // mon = new Sprite(resources["images/mon.png"].texture);
-  // mon.x = WIDTH/2;
-  // mon.y = 100;
-  // app.stage.addChild(mon);
 
   //Render the stage
   app.renderer.render(app.stage);
