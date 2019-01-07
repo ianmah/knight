@@ -10,7 +10,6 @@ var server = app.listen(4000, function(){
 // Static fils
 app.use(express.static('public'));
 
-var users = [];    // list of socket ids
 var players = [];  // list of usernames
 
 // Socket Setup
@@ -18,8 +17,6 @@ var io = socket(server);
 
 io.on('connection', function(socket){
   console.log('made socket connection ' + socket.id);
-  users.push(socket.id)
-  console.log(users);
   io.to(socket.id).emit('id', socket.id);
 
   socket.on('playerUpdate', function(data){
@@ -52,7 +49,6 @@ io.on('connection', function(socket){
   socket.on('reset', function(){
     console.log('reset');
     io.emit('reset');
-    users = [];
     players = [];
   })
 
