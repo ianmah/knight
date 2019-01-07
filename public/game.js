@@ -17,7 +17,7 @@ let Application = PIXI.Application,
     JUMP = 7;
     RESOLUTION = 2;
     OFFSET = 2*TILE;
-    BG_SPEED = .5;
+    BG_SPEED = .25;
 
 //Capture the keyboard arrow keys
 let left = keyboard("ArrowLeft"),
@@ -91,8 +91,10 @@ app.stage.position.y -= OFFSET;
 
 //load an image and run the `setup` function when it's done
 loader
-  .add("images/cloudsback.png")
   .add("images/cloudsfront.png")
+  .add("images/cloudsback.png")
+  .add("images/bgback.png")
+  .add("images/bgfront.png")
   .add("images/knight.png")
   .add("images/arrow.png")
   //.add("images/mon.png")
@@ -106,14 +108,20 @@ let floor = new Container();
 
 //This `setup` function will run when the image has loaded
 function setup() {
-
-  bg = new Sprite(resources["images/cloudsback.png"].texture);
-  bg.y = -25;
+  bg = new TilingSprite(resources["images/cloudsback.png"].texture, 512, 320);
   app.stage.addChild(bg);
 
   cloud1 = new TilingSprite(resources["images/cloudsfront.png"].texture, app.stage.width, app.stage.height);
   cloud1.x = OFFSET;
   app.stage.addChild(cloud1);
+  console.log(app.stage.height);
+
+  bg_back = new Sprite(resources["images/bgback.png"].texture);
+  bg_back.y -= 15;
+  app.stage.addChild(bg_back);
+  bg_front = new Sprite(resources["images/bgfront.png"].texture);
+  bg_front.y -= 15;
+  app.stage.addChild(bg_front);
 
   //Create the `tileset` sprite from the texture
   let base        = TextureCache["images/tileset.png"];
@@ -205,10 +213,16 @@ function gameLoop(delta){
 }
 let someloggernumber = 0;
 function play(delta) {
+
   if (cloud1.tilePosition.x >= cloud1.width){
     cloud1.tilePosition.x = 0;
   } else {
     cloud1.tilePosition.x +=BG_SPEED;
+  }
+  if (bg.tilePosition.x >= bg.width){
+    bg.tilePosition.x = 0;
+  } else {
+    bg.tilePosition.x +=BG_SPEED*0.25;
   }
 
   l.press = () => {
