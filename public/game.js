@@ -49,15 +49,6 @@ let level = [
   ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']]
 
-  // $(document).ready(function() {
-  //     // $.ajax({
-  //     //     type: "GET",
-  //     //     url: "assets/platform22.txt",
-  //     //     dataType: "text",
-  //     //     success: function(data) {loadLevel(data);}
-  //     //  });
-  //
-  // });
 $.get("assets/platform22.txt", function(data){ loadLevel(data)})
 
 function loadLevel(allText) {
@@ -198,15 +189,13 @@ function setup() {
 
 }
 
-state = play;
-
 function gameLoop(delta){
   requestAnimationFrame(gameLoop);
 
   // update current game state
-  state(delta);
+  play(delta);
 }
-
+let someloggernumber = 0;
 function play(delta) {
 
   l.press = () => {
@@ -276,6 +265,14 @@ function play(delta) {
       x: char.x,
       y: char.y
     })
+  } else {
+
+    socket.emit('playerUpdate', {
+      user: username,
+      x: someloggernumber++,
+      y: 1
+    })
+
   }
 
 }
@@ -290,7 +287,6 @@ socket.on('update', function(data){
       players.push(player);
       let opponent = new Player(player);
       playerObjs.push(opponent)
-      //console.log(playerObjs);
     } else if (player != username) {
       playerObjs[i].char.x = data[i].x;
       playerObjs[i].char.y = data[i].y;

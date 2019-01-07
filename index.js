@@ -27,9 +27,11 @@ io.on('connection', function(socket){
     if (index != -1){
       players[index]["x"] = data.x;
       players[index]["y"] = data.y;
-      io.emit('update', players)
-    }
-    //console.log(players);
+      io.emit('update', players);
+    } else {
+        io.emit('update', players);
+      }
+    console.log(players);
   })
 
   socket.on('newPlayer', function(data){
@@ -44,6 +46,7 @@ io.on('connection', function(socket){
 
   socket.on('load', function(){
     io.to(socket.id).emit('load');
+    io.emit('update', players);
   })
 
   socket.on('reset', function(){

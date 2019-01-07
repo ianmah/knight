@@ -1,10 +1,10 @@
-
-
 var connectBtn = document.getElementById('connect');
 var resetBtn = document.getElementById('reset');
 var handle = document.getElementById('handle');
 connectBtn.addEventListener('click', connect);
 resetBtn.addEventListener('click', reset);
+
+username = 'spectator';
 
 function connect(){
   username = handle.value
