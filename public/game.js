@@ -227,7 +227,6 @@ function play(delta) {
 
   l.press = () => {
     user.ammo++;
-    console.log(user.ammo);
   };
 
   x.press = () => {
@@ -247,12 +246,10 @@ function play(delta) {
     let arrow = bullets[i].arrow;
     if (!collisionArrow(arrow, level)){
       arrow.x += arrow.dx;
-    } else if (arrow.dx > 0){
-      arrow.dx = 0;
-      arrow.x += 7;
-    } else if (arrow.dx < 0) {
-      arrow.dx = 0;
-      arrow.x -= 4;
+    } else {
+      arrow.visible = false;
+      let deadArrow = new BulletDead(arrow.x, arrow.y, arrow.dx)
+      bullets.splice(i, 1);
     }
   }
 
@@ -461,3 +458,23 @@ class Bullet {
   }
 
 }
+
+  class BulletDead {
+
+    constructor(x, y, dx) {
+      let arrow
+      arrow = new Sprite(resources["images/arrow.png"].texture);
+      arrow.anchor.x = 0.5;
+      arrow.anchor.y = 0.5;
+      arrow.x = x+7;
+      arrow.y = y;
+      if (dx < 0){
+        //character is facing left
+        arrow.x = x-7;
+        arrow.scale.x = -1;
+      }
+      app.stage.addChild(arrow);
+      this.arrow = arrow;
+    }
+
+  }
