@@ -20,11 +20,11 @@ function collisionX(knight, level){
   predictX = knight.x + knight.dx;
 
   //txf = Math.floor((predictX+knight.halfWidth)/TILE);
-  tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
-  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
+  //tyc = Math.ceil((knight.y+knight.halfHeight+2)/TILE);
+  tyf = Math.floor((knight.y+knight.halfHeight+5)/TILE);
 
-  thf = Math.floor((predictX-knight.halfWidth)/TILE);
-  thc = Math.ceil((predictX+knight.halfWidth)/TILE);
+  thf = Math.floor((predictX-knight.halfWidth+1)/TILE);
+  thc = Math.ceil( (predictX+knight.halfWidth-1)/TILE);
 
   if (blockTile(level[tyf][thf+1]) && knight.dx > 0){
     return true;       // right collision

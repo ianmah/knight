@@ -13,7 +13,7 @@ let Application = PIXI.Application,
     SPEED = 1.5;
     GRAVITY = .55;
     MAXDY = 10;
-    JUMP = 8;
+    JUMP = 7;
     RESOLUTION = 2;
 
 //Capture the keyboard arrow keys
