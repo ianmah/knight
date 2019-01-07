@@ -3,8 +3,8 @@ let FLOOR = 'M';
 function collisionY(knight, level){
 
   // Find two tiles underneath character
-  txf = Math.floor((knight.x+knight.halfWidth+1)/TILE);
-  txc = Math.ceil((knight.x-knight.halfWidth)/TILE);
+  txf = Math.floor((knight.x+1)/TILE);
+  txc = Math.ceil((knight.x-1)/TILE);
 
   // Find x distance from the two tiles
   dxc = Math.abs(txc-(knight.x+knight.halfWidth)/TILE);
@@ -29,12 +29,12 @@ function collisionY(knight, level){
 }
 
 function collisionX(knight, level){
-  predictX = knight.x + knight.dx;
+  predictX = knight.x-knight.halfWidth + knight.dx;
 
   tyf = Math.floor((knight.y+knight.halfHeight+5)/TILE);
 
-  thf = Math.floor((predictX-knight.halfWidth+2.4)/TILE);
-  thc = Math.ceil( (predictX+knight.halfWidth-2.4)/TILE);
+  thf = Math.floor((predictX-knight.halfWidth+3)/TILE);
+  thc = Math.ceil( (predictX+knight.halfWidth-3)/TILE);
 
   if (isBlock(level[tyf][thf+1]) && knight.dx > 0){
     return true;       // right collision
