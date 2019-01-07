@@ -28,7 +28,6 @@ io.on('connection', function(socket){
     } else {
         io.emit('update', players);
       }
-    console.log(players);
   })
 
   socket.on('newPlayer', function(data){

@@ -2,7 +2,8 @@
 let Application = PIXI.Application,
     loader = PIXI.loader,
     resources = PIXI.loader.resources,
-    Sprite = PIXI.Sprite;
+    Sprite = PIXI.Sprite,
+    TilingSprite = PIXI.extras.TilingSprite;
     type = "WebGL";
     //Rectangle = PIXI.Rectangle;
     Container = PIXI.Container;
@@ -15,6 +16,8 @@ let Application = PIXI.Application,
     MAXDY = 10;
     JUMP = 7;
     RESOLUTION = 2;
+    OFFSET = 2*TILE;
+    BG_SPEED = .5;
 
 //Capture the keyboard arrow keys
 let left = keyboard("ArrowLeft"),
@@ -83,12 +86,13 @@ let app = new PIXI.Application({
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
-app.stage.position.x -= 2*TILE;
-app.stage.position.y -= 2*TILE;
+app.stage.position.x -= OFFSET;
+app.stage.position.y -= OFFSET;
 
 //load an image and run the `setup` function when it's done
 loader
-  .add("images/bg.png")
+  .add("images/cloudsback.png")
+  .add("images/cloudsfront.png")
   .add("images/knight.png")
   .add("images/arrow.png")
   //.add("images/mon.png")
@@ -103,9 +107,13 @@ let floor = new Container();
 //This `setup` function will run when the image has loaded
 function setup() {
 
-  bg = new Sprite(resources["images/bg.png"].texture);
+  bg = new Sprite(resources["images/cloudsback.png"].texture);
   bg.y = -25;
   app.stage.addChild(bg);
+
+  cloud1 = new TilingSprite(resources["images/cloudsfront.png"].texture, app.stage.width, app.stage.height);
+  cloud1.x = OFFSET;
+  app.stage.addChild(cloud1);
 
   //Create the `tileset` sprite from the texture
   let base        = TextureCache["images/tileset.png"];
@@ -197,6 +205,11 @@ function gameLoop(delta){
 }
 let someloggernumber = 0;
 function play(delta) {
+  if (cloud1.tilePosition.x >= cloud1.width){
+    cloud1.tilePosition.x = 0;
+  } else {
+    cloud1.tilePosition.x +=BG_SPEED;
+  }
 
   l.press = () => {
 
