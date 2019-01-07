@@ -365,6 +365,7 @@ class Player {
     char.dy = 0;
     char.x = 7*TILE;
     char.y = 9*TILE;
+    char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
     char.halfHeight = char.height/2;
     char.halfWidth = char.width/2;
     char.ddy = GRAVITY;
@@ -374,6 +375,7 @@ class Player {
 
   moveLeft(){
       this.char.dx = -SPEED;
+      this.char.scale.x = -1;
   }
 
   stopLeft(){
@@ -386,6 +388,7 @@ class Player {
 
   moveRight(){
       this.char.dx = SPEED;
+      this.char.scale.x = 1;
   }
 
   stopRight(){
@@ -417,14 +420,15 @@ class Player {
 
 class Bullet {
 
-  constructor(user) {
+  constructor(username) {
     let arrow;
-    this.owner = user;
+    this.owner = username;
     arrow = new Sprite(resources["images/arrow.png"].texture);
     arrow.dx = 0;
     arrow.dy = 0;
-    arrow.x = WIDTH/2;
-    arrow.y = HEIGHT/2;
+    arrow.x = user.char.x;
+    arrow.y = user.char.y;
+    console.log(arrow.x + ' ' + arrow.y);
     arrow.halfHeight = arrow.height/2;
     arrow.halfWidth = arrow.width/2;
     arrow.ddy = GRAVITY;
