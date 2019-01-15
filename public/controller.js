@@ -4,8 +4,6 @@ var handle = document.getElementById('handle');
 connectBtn.addEventListener('click', connect);
 resetBtn.addEventListener('click', reset);
 
-username = 'spectator';
-
 function connect(){
   username = handle.value
   if (username){
@@ -13,10 +11,6 @@ function connect(){
   } else {
     alert('enter a username');
   }
-}
-
-function reset(){
-  socket.emit('reset');
 }
 
 class Controller {

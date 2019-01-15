@@ -96,6 +96,7 @@ loader
   .add("images/cloudsback.png")
   .add("images/bgback.png")
   .add("images/bgfront.png")
+  .add("images/mon.png")
   .add("images/knight.png")
   .add("images/arrow.png")
   //.add("images/mon.png")
@@ -230,7 +231,8 @@ function play(delta) {
   };
 
   x.press = () => {
-
+    let mon = new Monster();
+    mons.push(mon);
   };
 
   z.press = () => {
@@ -256,83 +258,118 @@ function play(delta) {
 
   if (user != null){
 
-    for (i = 0; i < bulletsD.length; i++){
-      let arrow = bulletsD[i].arrow;
-      if(hitTest(user.char, arrow)){
-        arrow.visible = false;
-        bulletsD.splice(i, 1);
-        user.ammo++;
-      }
-    }
+   for (i = 0; i < bulletsD.length; i++){
+     let arrow = bulletsD[i].arrow;
+     if(hitTest(user.char, arrow)){
+       arrow.visible = false;
+       bulletsD.splice(i, 1);
+       user.ammo++;
+     }
+   }
+
+   //Left arrow key `press` method
+   left.press = () => {
+     user.moveLeft();
+   };
+   //Left arrow key `release` method
+   left.release = () => {
+     user.stopLeft();
+   };
+
+   //Up
+   up.press = () => {
+     user.moveJump();
+   };
+
+   //Right
+   right.press = () => {
+     user.moveRight();
+   };
+   right.release = () => {
+     user.stopRight();
+   };
+
+   // let char = user.char;
+   // if (!collisionX(char, level)){
+   //   char.x = char.x + char.dx;
+   // } else {
+   //   char.jumping = false;
+   // }
+   // char.y = char.y + char.dy;
+   // char.dy = Math.min(char.dy + char.ddy, MAXDY);
+   // char.ddy = GRAVITY;
+   //
+   // switch(collisionY(char, level)){
+   //   case 0: // feet collision
+   //     if (char.dy != 0){                              // if knight is "falling"
+   //       char.dy = 0;                                  // stop vertical motion
+   //       char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+   //       char.jumping = false;
+   //     }
+   //     break;
+   //   case 1: // head collision
+   //     if (char.dy != 0){                              // if knight is "falling"
+   //       char.dy = 0;                                  // stop vertical motion
+   //       char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+   //     }
+   //     break;
+   // }
+   //
+   // socket.emit('playerUpdate', {
+   //   user: user.username,
+   //   x: char.x,
+   //   y: char.y,
+   //   dx: char.scale.x,
+   // })
 
 
-    //Left arrow key `press` method
-    left.press = () => {
-      user.moveLeft();
-    };
-    //Left arrow key `release` method
-    left.release = () => {
-      user.stopLeft();
-    };
+   for (i = 0; i < mons.length; i++){
+       let char = mons[i].char;
+       if (!collisionX(char, level)){
+         char.x = char.x + char.dx;
+       } else if (collisionX(char, level)){
+         if (char.type == 'mon'){
+             char.dx *= -1;
+         }
+       }
+       char.y = char.y + char.dy;
+       char.dy = Math.min(char.dy + char.ddy, MAXDY);
+       char.ddy = GRAVITY;
 
-    //Up
-    up.press = () => {
-      user.moveJump();
-    };
-
-    //Right
-    right.press = () => {
-      user.moveRight();
-    };
-    right.release = () => {
-      user.stopRight();
-    };
-
-    let char = user.char;
-    if (!collisionX(char, level)){
-      char.x = char.x + char.dx;
-    } else {
-      // char.jumping = false;
-    }
-    char.y = char.y + char.dy;
-    char.dy = Math.min(char.dy + char.ddy, MAXDY);
-    char.ddy = GRAVITY;
-
-    switch(collisionY(char, level)){
-      case 0: // feet collision
-        if (char.dy != 0){                              // if knight is "falling"
-          char.dy = 0;                                  // stop vertical motion
-          char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
-          char.jumping = 0;
-        }
-        break;
-      case 1: // head collision
-        if (char.dy != 0){                              // if knight is "falling"
-          char.dy = 0;                                  // stop vertical motion
-          char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
-        }
-        break;
-    }
-
-    socket.emit('playerUpdate', {
-      user: user.username,
-      x: char.x,
-      y: char.y,
-      dx: char.scale.x,
-    })
-  }
+       switch(collisionY(char, level)){
+         case 0: // feet collision
+           if (char.dy != 0){                              // if knight is "falling"
+             char.dy = 0;                                  // stop vertical motion
+             char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+             char.jumping = 0;
+           }
+           break;
+         case 1: // head collision
+           if (char.dy != 0){                              // if knight is "falling"
+             char.dy = 0;                                  // stop vertical motion
+             char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+           }
+           break;
+       }
+   }
+ }
 
 }
 
 var players = [];
 var playerObjs = [];
+var mons = [];
 var bullets = [];
 var bulletsD = [];
 
 function newPlayer(data) {
   let player = new Player(username);
-  playerObjs.push(player)
+  mons.push(player)
   user = player;
+}
+
+function reset(){
+  //do something
 }
 
 socket.on('playerAlreadyExist', function(data){
@@ -345,6 +382,32 @@ socket.on('id', function(data){
   id = data;
 })
 
+class Monster {
+
+  constructor() {
+    let char;
+    char = new Sprite(resources["images/mon.png"].texture);
+    char.type = 'mon';
+    char.dx = 0;
+    char.dy = 0;
+    char.x = 12*TILE;
+    char.y = 9*TILE;
+    char.dx = SPEED/2;
+    char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
+    char.halfHeight = char.height/2;
+    char.halfWidth = char.width/2;
+    char.ddy = GRAVITY;
+    app.stage.addChild(char);
+    this.char = char;
+  }
+
+  delete(){
+    app.stage.removeChild(this.char);
+    this.char.visible = false;
+  }
+
+}
+
 class Player {
 
   constructor(username) {
@@ -352,6 +415,7 @@ class Player {
     let char;
     this.username = username;
     char = new Sprite(resources["images/knight.png"].texture);
+    char.type = 'player';
     char.dx = 0;
     char.dy = 0;
     char.x = 7*TILE;
@@ -395,7 +459,6 @@ class Player {
       this.char.jumping++;
       this.char.dy = -JUMP;
     }
-
   }
 
   delete(){
