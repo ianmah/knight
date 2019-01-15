@@ -105,11 +105,17 @@ loader
   .load(setup);
 
 let knight, state, mon;
+let jumpSound, arrowSound, pickupSound;
 
 let floor = new Container();
 
 //This `setup` function will run when the image has loaded
 function setup() {
+  jumpSound = PIXI.sound.Sound.from({ url: 'assets/jump.wav', volume: 0.2 });
+  arrowSound = PIXI.sound.Sound.from({ url: 'assets/arrow.wav' });
+  pickupSound = PIXI.sound.Sound.from({ url: 'assets/pickup.wav', volume: .5 });
+
+
   bg = new TilingSprite(resources["images/cloudsback.png"].texture, 512, 320);
   app.stage.addChild(bg);
 
@@ -240,6 +246,7 @@ function play(delta) {
   z.press = () => {
     if (user.ammo > 0){
       let arrow = new Bullet(username);
+      arrowSound.play();
       user.ammo--;
       console.log('bullet');
       bullets.push(arrow);
@@ -266,6 +273,7 @@ function play(delta) {
        arrow.visible = false;
        bulletsD.splice(i, 1);
        user.ammo++;
+       pickupSound.play();
      }
    }
 
@@ -435,6 +443,8 @@ class Player {
     if (this.char.jumping < 2) {
       this.char.jumping++;
       this.char.dy = -JUMP;
+      // PIXI.sound.play('jump');
+      jumpSound.play();
     }
   }
 
