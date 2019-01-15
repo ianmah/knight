@@ -24,6 +24,7 @@ class Controller {
     this.left = keyboard("ArrowLeft"),
     this.up = keyboard("ArrowUp"),
     this.right = keyboard("ArrowRight");
+    this.o = keyboard("o");
     this.l = keyboard("l");
     this.x = keyboard("x");
     this.z = keyboard("z");

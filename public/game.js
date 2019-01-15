@@ -27,6 +27,7 @@ let left = keyboard("ArrowLeft"),
     z = keyboard("f");
     l = keyboard("l");
     x = keyboard("x");
+    o = keyboard("o");
 
 let user = null,
     username = null;
@@ -98,20 +99,24 @@ loader
   .add("images/bgfront.png")
   .add("images/mon.png")
   .add("images/knight.png")
+  .add("assets/coin_spritesheet.json")
   .add("images/arrow.png")
-  //.add("images/mon.png")
   .add("images/tiles.png")
   .add("images/tileset.png")
   .load(setup);
 
 let knight, state, mon;
 let jumpSound, arrowSound, pickupSound;
+let sheet = PIXI.loader.resources["assets/coin_spritesheet.json"];
 
 let floor = new Container();
 
 //This `setup` function will run when the image has loaded
 function setup() {
-  jumpSound = PIXI.sound.Sound.from({ url: 'assets/jump.wav', volume: 0.2 });
+console.log(sheet.spritesheet);
+
+  // Load sounds
+  jumpSound = PIXI.sound.Sound.from({ url: 'assets/jump2.wav', volume: 0.2 });
   arrowSound = PIXI.sound.Sound.from({ url: 'assets/arrow.wav' });
   pickupSound = PIXI.sound.Sound.from({ url: 'assets/pickup.wav', volume: .5 });
 
@@ -233,8 +238,7 @@ function play(delta) {
   }
 
   l.press = () => {
-    let mon = new Monster(20, 16);
-    mons.push(mon);
+    let coin = new Coin(20, 16);
     user.ammo++;
   };
 
@@ -246,10 +250,12 @@ function play(delta) {
   z.press = () => {
     if (user.ammo > 0){
       let arrow = new Bullet(username);
-      arrowSound.play();
+      arrowSound.play({speed: 1.2});
       user.ammo--;
       console.log('bullet');
       bullets.push(arrow);
+    } else {
+      pickupSound.play({volume: .2, speed: 2});
     }
   };
 
@@ -306,7 +312,8 @@ function play(delta) {
        char.x = char.x + char.dx;
      } else if (collisionX(char, level)){
        if (char.type == 'mon'){
-           char.dx *= -1;
+         char.dx *= -1;
+         mons[i].flip();
        }
      }
      char.y = char.y + char.dy;
@@ -332,6 +339,7 @@ function play(delta) {
      if (char.type == 'mon'){
        if (!mobFall(char, level)){
          char.dx *= -1;
+         mons[i].flip();
        }
      }
  }
@@ -371,7 +379,12 @@ class Monster {
 
   constructor(x, y) {
     let char;
-    char = new Sprite(resources["images/mon.png"].texture);
+    // create an animated sprite
+    char = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["chort_run_anim_f"]);
+    // set speed, start playback and add it to the stage
+    char.animationSpeed = 0.167;
+    char.play();
+
     char.type = 'mon';
     char.dx = 0;
     char.dy = 0;
@@ -389,6 +402,11 @@ class Monster {
   delete(){
     app.stage.removeChild(this.char);
     this.char.visible = false;
+  }
+
+  flip(){
+    console.log('flip');
+    this.char.scale.x *= -1;
   }
 
 }
@@ -500,3 +518,23 @@ class Bullet {
     }
 
   }
+
+class Coin {
+
+  constructor(x, y) {
+    let coin;
+    // create an animated sprite
+    coin = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["coin"]);
+    // set speed, start playback and add it to the stage
+    coin.animationSpeed = 0.167;
+    coin.play();
+
+    coin.anchor.x = 0.5;
+    coin.anchor.y = 0.5;
+    coin.x = x*TILE;
+    coin.y = y*TILE;
+    app.stage.addChild(coin);
+    this.coin = coin;
+  }
+
+}
