@@ -292,7 +292,7 @@ function play(delta) {
     if (!collisionX(char, level)){
       char.x = char.x + char.dx;
     } else {
-      char.jumping = false;
+      // char.jumping = false;
     }
     char.y = char.y + char.dy;
     char.dy = Math.min(char.dy + char.ddy, MAXDY);
@@ -303,7 +303,7 @@ function play(delta) {
         if (char.dy != 0){                              // if knight is "falling"
           char.dy = 0;                                  // stop vertical motion
           char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
-          char.jumping = false;
+          char.jumping = 0;
         }
         break;
       case 1: // head collision
@@ -391,9 +391,9 @@ class Player {
   }
 
   moveJump(){
-    if (!this.char.jumping) {
-      this.char.jumping = true;
-      this.char.dy = - JUMP;
+    if (this.char.jumping < 2) {
+      this.char.jumping++;
+      this.char.dy = -JUMP;
     }
 
   }
