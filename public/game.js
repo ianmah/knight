@@ -98,8 +98,8 @@ loader
   .add("images/bgback.png")
   .add("images/bgfront.png")
   .add("images/mon.png")
-  .add("images/knight.png")
-  .add("assets/coin_spritesheet.json")
+  // .add("images/knight.png")
+  .add("assets/spritesheet.json")
   .add("images/arrow.png")
   .add("images/tiles.png")
   .add("images/tileset.png")
@@ -107,14 +107,12 @@ loader
 
 let knight, state, mon;
 let jumpSound, arrowSound, pickupSound;
-let sheet = PIXI.loader.resources["assets/coin_spritesheet.json"];
+let sheet = PIXI.loader.resources["assets/spritesheet.json"];
 
 let floor = new Container();
 
 //This `setup` function will run when the image has loaded
 function setup() {
-console.log(sheet.spritesheet);
-
   // Load sounds
   jumpSound = PIXI.sound.Sound.from({ url: 'assets/jump2.wav', volume: 0.2 });
   arrowSound = PIXI.sound.Sound.from({ url: 'assets/arrow.wav' });
@@ -325,6 +323,9 @@ function play(delta) {
          if (char.dy != 0){                              // if knight is "falling"
            char.dy = 0;                                  // stop vertical motion
            char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+           if (char.jumping > 0){
+             char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
+           }
            char.jumping = 0;
          }
          break;
@@ -341,6 +342,14 @@ function play(delta) {
          char.dx *= -1;
          mons[i].flip();
        }
+     // }
+     // if (char.type == 'player'){
+     //   if (char.jumping){
+     //     char.textures = sheet.spritesheet.animations["knight_m_hit_anim_f"];
+     //   } else {
+     //     char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
+     //     char.play();
+     //   }
      }
  }
 
@@ -417,7 +426,11 @@ class Player {
     this.ammo = AMMO;
     let char;
     this.username = username;
-    char = new Sprite(resources["images/knight.png"].texture);
+    char = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["knight_m_idle_anim_f"]);
+    // set speed, start playback and add it to the stage
+    char.animationSpeed = 0.15;
+    char.play();
+
     char.type = 'player';
     char.dx = 0;
     char.dy = 0;
@@ -431,9 +444,19 @@ class Player {
     this.char = char;
   }
 
+  texture(anim){
+    if (this.char.jumping == 0){
+      this.char.textures = sheet.spritesheet.animations["knight_m_"+anim+"_anim_f"];
+    } else {
+      this.char.textures = sheet.spritesheet.animations["knight_m_hit_anim_f"];
+    }
+    this.char.play();
+  }
+
   moveLeft(){
       this.char.dx = -SPEED;
       this.char.scale.x = -1;
+      this.texture('run');
   }
 
   stopLeft(){
@@ -441,12 +464,14 @@ class Player {
       this.moveRight();
     } else {
       this.char.dx = 0;
+      this.texture('idle');
     }
   }
 
   moveRight(){
       this.char.dx = SPEED;
       this.char.scale.x = 1;
+      this.texture('run');
   }
 
   stopRight(){
@@ -454,6 +479,7 @@ class Player {
       this.moveLeft();
     } else {
       this.char.dx = 0;
+      this.texture('idle');
     }
   }
 
@@ -463,6 +489,7 @@ class Player {
       this.char.dy = -JUMP;
       // PIXI.sound.play('jump');
       jumpSound.play();
+      this.texture('hit');
     }
   }
 
