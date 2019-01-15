@@ -9,7 +9,7 @@ username = 'spectator';
 function connect(){
   username = handle.value
   if (username){
-    socket.emit('newPlayer', username);
+    newPlayer(username);
   } else {
     alert('enter a username');
   }

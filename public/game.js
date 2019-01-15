@@ -20,7 +20,7 @@ let Application = PIXI.Application,
     BG_SPEED = .25;
     AMMO = 4;
 
-//Capture the keyboard arrow keys
+//Capture the keyboard keys
 let left = keyboard("ArrowLeft"),
     up = keyboard(" "),
     right = keyboard("ArrowRight");
@@ -320,11 +320,6 @@ function play(delta) {
       y: char.y,
       dx: char.scale.x,
     })
-  } else {
-
-    socket.emit('playerUpdate', {
-    })
-
   }
 
 }
@@ -334,52 +329,14 @@ var playerObjs = [];
 var bullets = [];
 var bulletsD = [];
 
-socket.on('update', function(data){
-  for (i = 0; i < data.length; i++){
-    let player = data[i].player;
-    if (players.indexOf(player) == -1 && player != username){
-      players.push(player);
-      let opponent = new Player(player);
-      playerObjs.push(opponent)
-    } else if (player != username) {
-
-      let char = playerObjs[i].char;
-      char.x = data[i].x;
-      char.y = data[i].y;
-      char.scale.x = data[i].dx;
-
-    }
-  }
-})
-
-socket.on('newPlayer', function(data){
-  if (data == username){
-    let player = new Player(username);
-    playerObjs.push(player)
-    user = player;
-  } else {
-  }
-})
+function newPlayer(data) {
+  let player = new Player(username);
+  playerObjs.push(player)
+  user = player;
+}
 
 socket.on('playerAlreadyExist', function(data){
   alert('User already exists');
-})
-
-// Socket loads faster than pixi
-// Empty player list so it can check for new additions again
-socket.on('load', function(data){
-  players = [];
-  playerObjs = [];
-  bullets = [];
-})
-
-socket.on('reset', function(data){
-  for (i = 0; i < playerObjs.length; i++){
-    playerObjs[i].delete();
-  }
-  players = [];
-  playerObjs = [];
-  bullets = [];
 })
 
 let id;
