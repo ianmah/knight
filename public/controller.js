@@ -13,6 +13,10 @@ function connect(){
   }
 }
 
+function reset(){
+  deleteAll();
+}
+
 class Controller {
 
   constructor(){

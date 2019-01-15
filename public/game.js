@@ -227,11 +227,13 @@ function play(delta) {
   }
 
   l.press = () => {
+    let mon = new Monster(20, 16);
+    mons.push(mon);
     user.ammo++;
   };
 
   x.press = () => {
-    let mon = new Monster();
+    let mon = new Monster(12, 10);
     mons.push(mon);
   };
 
@@ -288,70 +290,42 @@ function play(delta) {
    right.release = () => {
      user.stopRight();
    };
+ }
 
-   // let char = user.char;
-   // if (!collisionX(char, level)){
-   //   char.x = char.x + char.dx;
-   // } else {
-   //   char.jumping = false;
-   // }
-   // char.y = char.y + char.dy;
-   // char.dy = Math.min(char.dy + char.ddy, MAXDY);
-   // char.ddy = GRAVITY;
-   //
-   // switch(collisionY(char, level)){
-   //   case 0: // feet collision
-   //     if (char.dy != 0){                              // if knight is "falling"
-   //       char.dy = 0;                                  // stop vertical motion
-   //       char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
-   //       char.jumping = false;
-   //     }
-   //     break;
-   //   case 1: // head collision
-   //     if (char.dy != 0){                              // if knight is "falling"
-   //       char.dy = 0;                                  // stop vertical motion
-   //       char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
-   //     }
-   //     break;
-   // }
-   //
-   // socket.emit('playerUpdate', {
-   //   user: user.username,
-   //   x: char.x,
-   //   y: char.y,
-   //   dx: char.scale.x,
-   // })
+ for (i = 0; i < mons.length; i++){
+     let char = mons[i].char;
+     if (!collisionX(char, level)){
+       char.x = char.x + char.dx;
+     } else if (collisionX(char, level)){
+       if (char.type == 'mon'){
+           char.dx *= -1;
+       }
+     }
+     char.y = char.y + char.dy;
+     char.dy = Math.min(char.dy + char.ddy, MAXDY);
+     char.ddy = GRAVITY;
 
-
-   for (i = 0; i < mons.length; i++){
-       let char = mons[i].char;
-       if (!collisionX(char, level)){
-         char.x = char.x + char.dx;
-       } else if (collisionX(char, level)){
-         if (char.type == 'mon'){
-             char.dx *= -1;
+     switch(collisionY(char, level)){
+       case 0: // feet collision
+         if (char.dy != 0){                              // if knight is "falling"
+           char.dy = 0;                                  // stop vertical motion
+           char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+           char.jumping = 0;
          }
-       }
-       char.y = char.y + char.dy;
-       char.dy = Math.min(char.dy + char.ddy, MAXDY);
-       char.ddy = GRAVITY;
+         break;
+       case 1: // head collision
+         if (char.dy != 0){                              // if knight is "falling"
+           char.dy = 0;                                  // stop vertical motion
+           char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+         }
+         break;
+     }
 
-       switch(collisionY(char, level)){
-         case 0: // feet collision
-           if (char.dy != 0){                              // if knight is "falling"
-             char.dy = 0;                                  // stop vertical motion
-             char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
-             char.jumping = 0;
-           }
-           break;
-         case 1: // head collision
-           if (char.dy != 0){                              // if knight is "falling"
-             char.dy = 0;                                  // stop vertical motion
-             char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
-           }
-           break;
+     if (char.type == 'mon'){
+       if (!mobFall(char, level)){
+         char.dx *= -1;
        }
-   }
+     }
  }
 
 }
@@ -368,8 +342,11 @@ function newPlayer(data) {
   user = player;
 }
 
-function reset(){
-  //do something
+function deleteAll(){
+   for (i = 0; i < mons.length; i++){
+     let entity = mons[i];
+     entity.delete();
+   }
 }
 
 socket.on('playerAlreadyExist', function(data){
@@ -384,14 +361,14 @@ socket.on('id', function(data){
 
 class Monster {
 
-  constructor() {
+  constructor(x, y) {
     let char;
     char = new Sprite(resources["images/mon.png"].texture);
     char.type = 'mon';
     char.dx = 0;
     char.dy = 0;
-    char.x = 12*TILE;
-    char.y = 9*TILE;
+    char.x = x*TILE;
+    char.y = y*TILE;
     char.dx = SPEED/2;
     char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
     char.halfHeight = char.height/2;

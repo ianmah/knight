@@ -46,6 +46,25 @@ function collisionX(knight, level){
 
 }
 
+function mobFall(mob, level){
+  predictX = mob.x-mob.halfWidth + mob.dx;
+  //predictY = mob.y-TILE;
+
+  tyf = Math.floor((mob.y+mob.halfHeight+5)/TILE);
+
+  thf = Math.floor((predictX-mob.halfWidth+3)/TILE);
+  thc = Math.ceil( (predictX+mob.halfWidth-3)/TILE);
+
+  if (isBlock(level[tyf+1][thf+1]) && mob.dx > 0){
+    return true;       // right collision
+  } else if (isBlock(level[tyf+1][thc-1]) && mob.dx < 0){
+    return true;       //left collision
+  } else {
+    return false;
+  }
+
+}
+
 function collisionArrow(arrow, level){
   predictX = arrow.x-arrow.halfWidth + arrow.dx;
 
