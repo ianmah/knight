@@ -324,7 +324,12 @@ function play(delta) {
            char.dy = 0;                                  // stop vertical motion
            char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
            if (char.jumping > 0){
-             char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
+             if (char.dx != 0){
+               char.textures = sheet.spritesheet.animations["knight_m_run_anim_f"];
+               char.play();
+             } else {
+               char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
+             }
            }
            char.jumping = 0;
          }
