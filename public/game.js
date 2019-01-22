@@ -221,7 +221,7 @@ function gameLoop(delta){
   // update current game state
   play(delta);
 }
-let someloggernumber = 0;
+
 function play(delta) {
 
   if (cloud1.tilePosition.x >= cloud1.width){
@@ -263,7 +263,7 @@ function play(delta) {
       arrow.x += arrow.dx;
     } else {
       arrow.visible = false;
-      let deadArrow = new BulletDead(arrow.x, arrow.y, arrow.dx)
+      let deadArrow = new BulletDead(arrow.x/TILE, arrow.y/TILE, arrow.dx)
       bulletsD.push(deadArrow);
       bullets.splice(i, 1);
     }
@@ -272,7 +272,7 @@ function play(delta) {
   if (user != null){
 
    for (i = 0; i < bulletsD.length; i++){
-     let arrow = bulletsD[i].arrow;
+     let arrow = bulletsD[i].sprite;
      if(hitTest(user.char, arrow)){
        arrow.visible = false;
        bulletsD.splice(i, 1);
@@ -342,16 +342,10 @@ function play(delta) {
          char.dx *= -1;
          mons[i].flip();
        }
-     // }
-     // if (char.type == 'player'){
-     //   if (char.jumping){
-     //     char.textures = sheet.spritesheet.animations["knight_m_hit_anim_f"];
-     //   } else {
-     //     char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
-     //     char.play();
-     //   }
      }
- }
+
+
+ } // for mons
 
 }
 
@@ -384,33 +378,50 @@ socket.on('id', function(data){
   id = data;
 })
 
-class Monster {
+class Entity {
 
-  constructor(x, y) {
+  constructor(img, x, y){
     let char;
     // create an animated sprite
-    char = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["chort_run_anim_f"]);
+    char = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations[img]);
     // set speed, start playback and add it to the stage
     char.animationSpeed = 0.167;
     char.play();
 
-    char.type = 'mon';
     char.dx = 0;
     char.dy = 0;
-    char.x = x*TILE;
-    char.y = y*TILE;
-    char.dx = SPEED/2;
+
+    if (x === undefined || y === undefined){
+      char.x = 14*TILE;
+      char.y = 14*TILE;
+
+    } else {
+      char.x = x*TILE;
+      char.y = y*TILE;
+    }
+
     char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
     char.halfHeight = char.height/2;
     char.halfWidth = char.width/2;
-    char.ddy = GRAVITY;
     app.stage.addChild(char);
     this.char = char;
+
   }
 
   delete(){
     app.stage.removeChild(this.char);
     this.char.visible = false;
+  }
+
+}
+
+class Monster extends Entity {
+
+  constructor(x, y) {
+    super("chort_run_anim_f", x, y);
+    this.char.type = 'mon';
+    this.char.dx = SPEED/2;
+    this.char.ddy = GRAVITY;
   }
 
   flip(){
@@ -526,42 +537,45 @@ class Bullet {
 
 }
 
-  class BulletDead {
+class SpriteEntity {
 
-    constructor(x, y, dx) {
-      let arrow
-      arrow = new Sprite(resources["images/arrow.png"].texture);
-      arrow.anchor.x = 0.5;
-      arrow.anchor.y = 0.5;
-      arrow.x = x+8;
-      arrow.y = y;
-      if (dx < 0){
-        //arrow is facing left
-        arrow.x = x-3;
-        arrow.scale.x = -1;
-      }
-      app.stage.addChild(arrow);
-      this.arrow = arrow;
+  constructor(img, x, y) {
+    let sprite
+    sprite = new Sprite(resources["images/"+img+".png"].texture);
+    sprite.anchor.x = 0.5;
+    sprite.anchor.y = 0.5;
+
+    if (x === undefined || y === undefined){
+      sprite.x = 14*TILE;
+      sprite.y = 14*TILE;
+
+    } else {
+      sprite.x = x*TILE;
+      sprite.y = y*TILE;
     }
-
+    app.stage.addChild(sprite);
+    this.sprite = sprite;
   }
 
-class Coin {
+}
+
+class BulletDead extends SpriteEntity {
+
+  constructor(x, y, dx) {
+    super('arrow', x, y);
+    if (dx < 0){
+      //arrow is facing left
+      this.sprite.x = x-3;
+      this.sprite.scale.x = -1;
+    }
+  }
+
+}
+
+class Coin extends Entity {
 
   constructor(x, y) {
-    let coin;
-    // create an animated sprite
-    coin = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["coin"]);
-    // set speed, start playback and add it to the stage
-    coin.animationSpeed = 0.167;
-    coin.play();
-
-    coin.anchor.x = 0.5;
-    coin.anchor.y = 0.5;
-    coin.x = x*TILE;
-    coin.y = y*TILE;
-    app.stage.addChild(coin);
-    this.coin = coin;
+    super("coin", x, y);
   }
 
 }
