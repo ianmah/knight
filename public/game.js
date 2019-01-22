@@ -237,6 +237,7 @@ function play(delta) {
 
   l.press = () => {
     let coin = new Coin(20, 16);
+    coins.push(coin);
     user.ammo++;
   };
 
@@ -269,12 +270,21 @@ function play(delta) {
     }
   }
 
+  for (i = 0; i < coins.length; i++){
+    let coin = coins[i].char;
+    if (hitTest(user.char, coin)){
+      coins[i].delete();
+      coins.splice(i, 1);
+      pickupSound.play();
+    }
+  }
+
   if (user != null){
 
    for (i = 0; i < bulletsD.length; i++){
      let arrow = bulletsD[i].sprite;
      if(hitTest(user.char, arrow)){
-       arrow.visible = false;
+       bulletsD[i].delete();
        bulletsD.splice(i, 1);
        user.ammo++;
        pickupSound.play();
@@ -354,9 +364,8 @@ function play(delta) {
 
 }
 
-var players = [];
-var playerObjs = [];
 var mons = [];
+var coins = [];
 var bullets = [];
 var bulletsD = [];
 
@@ -438,6 +447,11 @@ class SpriteEntity {
     }
     app.stage.addChild(sprite);
     this.sprite = sprite;
+  }
+
+  delete(){
+    app.stage.removeChild(this.sprite);
+    this.sprite.visible = false;
   }
 
 }
@@ -550,8 +564,10 @@ class BulletDead extends SpriteEntity {
     super('arrow', x/TILE, y/TILE);
     if (dx < 0){
       //arrow is facing left
-      this.sprite.x = x-3;
+      this.sprite.x = x-5;
       this.sprite.scale.x = -1;
+    } else {
+      this.sprite.x = x+5;
     }
   }
 
