@@ -7,15 +7,19 @@ function collisionY(knight, level){
   txc = Math.ceil((knight.x-1)/TILE);
 
   // Find x distance from the two tiles
-  dxc = Math.abs(txc-(knight.x+knight.halfWidth)/TILE);
-  dxf = Math.abs(txf-(knight.x+knight.halfWidth)/TILE);
+  dxf = Math.abs(txf-(knight.x+knight.halfWidth));
+  dxc = Math.abs(txc-(knight.x+knight.halfWidth));
+  // dxc = Math.abs(txc-(knight.x)/TILE);
+  // dxf = Math.abs(txf-(knight.x)/TILE);
 
   tx = null;
   // Find closer tile
   if (dxf < dxc){
     tx = txc;
-  } else {
+  } else if (dxf > dxc) {
     tx = txf;
+  } else {
+    tx = txc-1;
   }
 
   tyc = Math.ceil((knight.y-10)/TILE);
@@ -25,8 +29,6 @@ function collisionY(knight, level){
     return 0;       // feet collision
   } else if (isBlock(level[tyf][tx])){
     return 1;       // head collision
-  } else {
-    console.log('hi');
   }
 }
 
@@ -35,8 +37,8 @@ function collisionX(knight, level){
 
   tyf = Math.floor((knight.y-5)/TILE);
 
-  thf = Math.floor((predictX-knight.halfWidth+3)/TILE);
-  thc = Math.ceil( (predictX+knight.halfWidth-3)/TILE);
+  thf = Math.floor((predictX-knight.halfWidth+4)/TILE);
+  thc = Math.ceil( (predictX+knight.halfWidth-4)/TILE);
 
   if (isBlock(level[tyf][thf+1]) && knight.dx > 0){
     return true;       // right collision
@@ -54,8 +56,8 @@ function mobFall(mob, level){
 
   tyf = Math.floor((mob.y-5)/TILE);
 
-  thf = Math.floor((predictX-mob.halfWidth+3)/TILE);
-  thc = Math.ceil( (predictX+mob.halfWidth-3)/TILE);
+  thf = Math.floor((predictX-mob.halfWidth+4)/TILE);
+  thc = Math.ceil( (predictX+mob.halfWidth-4)/TILE);
 
   if (isBlock(level[tyf+1][thf+1]) && mob.dx > 0){
     return true;       // right collision
@@ -95,7 +97,7 @@ function hitTest(r1, r2){
 
   //Find the center points of each sprite
   r1.centerX = r1.x + r1.width / 2;
-  r1.centerY = r1.y + r1.height / 2;
+  r1.centerY = r1.y - r1.height / 2;
   r2.centerX = r2.x + r2.width / 2;
   r2.centerY = r2.y + r2.height / 2;
 

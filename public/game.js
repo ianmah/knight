@@ -553,7 +553,7 @@ class Bullet extends SpriteEntity {
       arrow.dx *= -1;
     }
     arrow.x = user.char.x;
-    arrow.y = user.char.y + user.char.halfHeight;
+    arrow.y = user.char.y - user.char.halfHeight;
     arrow.halfHeight = arrow.height/2;
     arrow.halfWidth = arrow.width/2;
     arrow.ddx = GRAVITY;
