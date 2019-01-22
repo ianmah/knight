@@ -263,7 +263,7 @@ function play(delta) {
       arrow.x += arrow.dx;
     } else {
       arrow.visible = false;
-      let deadArrow = new BulletDead(arrow.x/TILE, arrow.y/TILE, arrow.dx)
+      let deadArrow = new BulletDead(arrow.x, arrow.y, arrow.dx)
       bulletsD.push(deadArrow);
       bullets.splice(i, 1);
     }
@@ -542,7 +542,7 @@ class Bullet extends SpriteEntity {
 class BulletDead extends SpriteEntity {
 
   constructor(x, y, dx) {
-    super('arrow', x, y);
+    super('arrow', x/TILE, y/TILE);
     if (dx < 0){
       //arrow is facing left
       this.sprite.x = x-3;
