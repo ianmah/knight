@@ -18,20 +18,22 @@ function collisionY(knight, level){
     tx = txf;
   }
 
-  tyc = Math.ceil((knight.y+knight.halfHeight)/TILE);
-  tyf = Math.floor((knight.y+knight.halfHeight)/TILE);
+  tyc = Math.ceil((knight.y-10)/TILE);
+  tyf = Math.floor((knight.y-10)/TILE);
 
   if        (isBlock(level[tyc][tx])){
     return 0;       // feet collision
   } else if (isBlock(level[tyf][tx])){
     return 1;       // head collision
+  } else {
+    console.log('hi');
   }
 }
 
 function collisionX(knight, level){
   predictX = knight.x-knight.halfWidth + knight.dx;
 
-  tyf = Math.floor((knight.y+knight.halfHeight+5)/TILE);
+  tyf = Math.floor((knight.y-5)/TILE);
 
   thf = Math.floor((predictX-knight.halfWidth+3)/TILE);
   thc = Math.ceil( (predictX+knight.halfWidth-3)/TILE);
@@ -50,7 +52,7 @@ function mobFall(mob, level){
   predictX = mob.x-mob.halfWidth + mob.dx;
   //predictY = mob.y-TILE;
 
-  tyf = Math.floor((mob.y+mob.halfHeight+5)/TILE);
+  tyf = Math.floor((mob.y-5)/TILE);
 
   thf = Math.floor((predictX-mob.halfWidth+3)/TILE);
   thc = Math.ceil( (predictX+mob.halfWidth-3)/TILE);

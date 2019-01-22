@@ -332,22 +332,24 @@ function play(delta) {
        case 0: // feet collision
          if (char.dy != 0){                              // if knight is "falling"
            char.dy = 0;                                  // stop vertical motion
-           char.y = (tyc-1)*TILE-char.halfHeight;        // clamp to position
+           char.y = tyc*TILE;                          // clamp to position
            if (char.jumping > 0){
              if (char.dx != 0){
                char.textures = sheet.spritesheet.animations["knight_m_run_anim_f"];
                char.play();
              } else {
                char.textures = sheet.spritesheet.animations["knight_m_idle_anim_f"];
+               char.play();
              }
            }
            char.jumping = 0;
          }
          break;
        case 1: // head collision
+       console.log('ouch');
          if (char.dy != 0){                              // if knight is "falling"
            char.dy = 0;                                  // stop vertical motion
-           char.y = (tyc)*TILE-char.halfHeight;        // clamp to position
+           char.y = (tyc+1)*TILE;                        // clamp to position
          }
          break;
      }
@@ -358,7 +360,6 @@ function play(delta) {
          mons[i].flip();
        }
      }
-
 
  } // for mons
 
@@ -377,8 +378,9 @@ function newPlayer(data) {
 
 function deleteAll(){
    for (i = 0; i < mons.length; i++){
-     let entity = mons[i];
-     entity.delete();
+     let mon = mons[i];
+     mons.splice(i, 1);
+     mon.delete();
    }
 }
 
@@ -415,6 +417,7 @@ class Entity {
     }
 
     char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
+    char.anchor.y = 1;     /* 0 = top, 0.5 = center, 1 = bottom */
     char.halfHeight = char.height/2;
     char.halfWidth = char.width/2;
     app.stage.addChild(char);
