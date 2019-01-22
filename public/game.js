@@ -258,7 +258,7 @@ function play(delta) {
   };
 
   for (i = 0; i < bullets.length; i++){
-    let arrow = bullets[i].arrow;
+    let arrow = bullets[i].sprite;
     if (!collisionArrow(arrow, level)){
       arrow.x += arrow.dx;
     } else {
@@ -415,6 +415,28 @@ class Entity {
 
 }
 
+class SpriteEntity {
+
+  constructor(img, x, y) {
+    let sprite
+    sprite = new Sprite(resources["images/"+img+".png"].texture);
+    sprite.anchor.x = 0.5;
+    sprite.anchor.y = 0.5;
+
+    if (x === undefined || y === undefined){
+      sprite.x = 14*TILE;
+      sprite.y = 14*TILE;
+
+    } else {
+      sprite.x = x*TILE;
+      sprite.y = y*TILE;
+    }
+    app.stage.addChild(sprite);
+    this.sprite = sprite;
+  }
+
+}
+
 class Monster extends Entity {
 
   constructor(x, y) {
@@ -431,28 +453,18 @@ class Monster extends Entity {
 
 }
 
-class Player {
+class Player extends Entity {
 
   constructor(username) {
+    super('knight_m_idle_anim_f')
     this.ammo = AMMO;
-    let char;
     this.username = username;
-    char = new PIXI.extras.AnimatedSprite(sheet.spritesheet.animations["knight_m_idle_anim_f"]);
-    // set speed, start playback and add it to the stage
-    char.animationSpeed = 0.15;
-    char.play();
+    this.char.type = 'player';
 
-    char.type = 'player';
-    char.dx = 0;
-    char.dy = 0;
-    char.x = 7*TILE;
-    char.y = 9*TILE;
-    char.anchor.x = 0.5;     /* 0 = top, 0.5 = center, 1 = bottom */
-    char.halfHeight = char.height/2;
-    char.halfWidth = char.width/2;
-    char.ddy = GRAVITY;
-    app.stage.addChild(char);
-    this.char = char;
+    this.char.x = 7*TILE;
+    this.char.y = 9*TILE;
+    this.char.ddy = GRAVITY;
+    this.char.animationSpeed = 0.15;
   }
 
   texture(anim){
@@ -504,23 +516,15 @@ class Player {
     }
   }
 
-  delete(){
-    app.stage.removeChild(this.char);
-    this.char.visible = false;
-  }
-
 }
 
-class Bullet {
+class Bullet extends SpriteEntity {
 
   constructor(username) {
-    let arrow;
+    super('arrow');
+    let arrow = this.sprite;
     this.owner = username;
-    arrow = new Sprite(resources["images/arrow.png"].texture);
     arrow.dx = SPEED*6;
-    arrow.dy = 0;
-    arrow.anchor.x = 0.5;
-    arrow.anchor.y = 0.5;
     if (user.char.scale.x < 0){
       //character is facing left
       arrow.scale.x = -1;
@@ -531,30 +535,6 @@ class Bullet {
     arrow.halfHeight = arrow.height/2;
     arrow.halfWidth = arrow.width/2;
     arrow.ddx = GRAVITY;
-    app.stage.addChild(arrow);
-    this.arrow = arrow;
-  }
-
-}
-
-class SpriteEntity {
-
-  constructor(img, x, y) {
-    let sprite
-    sprite = new Sprite(resources["images/"+img+".png"].texture);
-    sprite.anchor.x = 0.5;
-    sprite.anchor.y = 0.5;
-
-    if (x === undefined || y === undefined){
-      sprite.x = 14*TILE;
-      sprite.y = 14*TILE;
-
-    } else {
-      sprite.x = x*TILE;
-      sprite.y = y*TILE;
-    }
-    app.stage.addChild(sprite);
-    this.sprite = sprite;
   }
 
 }
